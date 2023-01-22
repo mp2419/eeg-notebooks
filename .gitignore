@@ -7,6 +7,11 @@ __pycache__
 doc/auto_examples
 doc/_build
 
+#apps and docs
+apps/BlueMuse_2.3.0.0
+docs/books
+
+
 # Built by auto_examples
 examples/visual_cueing/*.csv
 

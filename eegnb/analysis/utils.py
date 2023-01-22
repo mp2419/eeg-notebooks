@@ -185,7 +185,6 @@ def load_data(
             fnames,
             sfreq=sfreq,
             ch_ind=ch_ind,
-            aux_ind=[5],
             replace_ch_names=replace_ch_names,
             verbose=verbose,
         )
