@@ -8,7 +8,7 @@ import random
 pygame.init()
 
 # Set screen size and caption
-size = (700, 500)
+size = (1000, 700)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Oddball Experiment")
 
@@ -21,29 +21,38 @@ end_time = pygame.time.get_ticks() + 10000
 
 # Create a list of circles
 circles = []
-for i in range(10):
-    x = random.randint(0, size[0])
-    y = random.randint(0, size[1])
-    radius = random.randint(10, 50)
-    color = random.choice([red, blue])
-    circles.append((x, y, radius, color))
+x = size[0]/2
+y = size[1]/2
+radius = 200
+samples = []
+color = random.choice([red, blue])
+circles.append((x, y, radius, color))
+move = pygame.USEREVENT+1
+pygame.time.set_timer(move, 500)
 
+if(color == blue): samples.append(pygame.time.get_ticks())
 # Main loop
 running = True
 while running:
     for event in pygame.event.get():
+        if event.type == move:
+            color1 = random.choice([red, blue])
+            if color == red: 
+                if color1 == blue: samples.append(pygame.time.get_ticks())
+            color = color1
+
         if event.type == pygame.QUIT:
             running = False
 
     # Draw the circles
-    for x, y, radius, color in circles:
-        pygame.draw.circle(screen, color, (x, y), radius)
+    pygame.draw.circle(screen, color, (x, y), radius)
 
     # Update the screen
     pygame.display.flip()
 
     # End the experiment after 10 seconds
     if pygame.time.get_ticks() > end_time:
+        print(samples, len(samples))
         running = False
 
 # Exit pygame
