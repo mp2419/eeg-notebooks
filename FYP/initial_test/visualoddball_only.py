@@ -3,18 +3,53 @@
 #-------------------------
 import pygame
 import random
+from pygame.locals import *
 
-# Initialize pygame
+def show_instructions():
+    instruction_text = "Welcome! You will see displayed circles of different colours, please count the blue ones. Occasionally, you will hear a left or right indicator. Please press the appropriate arrow key to continue the test. Stay still, focus on the centre of the screen, and try not to blink. This test will run for 10 seconds. Press spacebar to continue."
+    white = (255, 255, 255)
+    #green = (0, 150, 0)
+    blue = (0, 0, 128)
+    X = 1900
+    Y = 1000
+    pygame.display_surface = pygame.display.set_mode((X, Y))
+    pygame.display.set_caption('Instructions')
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text = font.render(instruction_text, True, white, blue)
+    pygame.textRect = text.get_rect()
+    pygame.textRect.center = (X // 2, Y // 2)
+    event = pygame.event.wait()
+ 
+    # infinite loop
+    while True:
+        pygame.display_surface.fill(blue)
+        pygame.display_surface.blit(text, pygame.textRect)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    return
+        pygame.display.update()
+
+
+#---------Initialize pygame
 pygame.init()
-
+show_instructions()
 # Set screen size and caption
-size = (1000, 700)
+size = (1900, 1000)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Oddball Experiment")
 
 # Define colors
 red = (255, 0, 0)
 blue = (0, 0, 255)
+
+#--------instructions--------
+
+
+
+#-------start recording
 
 # Run the experiment for 10 seconds
 end_time = pygame.time.get_ticks() + 10000
@@ -29,9 +64,9 @@ color = random.choice([red, blue])
 circles.append((x, y, radius, color))
 move = pygame.USEREVENT+1
 pygame.time.set_timer(move, 500)
-
 if(color == blue): samples.append(pygame.time.get_ticks())
-# Main loop
+
+#-----------loop
 running = True
 while running:
     for event in pygame.event.get():
@@ -40,7 +75,6 @@ while running:
             if color == red: 
                 if color1 == blue: samples.append(pygame.time.get_ticks())
             color = color1
-
         if event.type == pygame.QUIT:
             running = False
 

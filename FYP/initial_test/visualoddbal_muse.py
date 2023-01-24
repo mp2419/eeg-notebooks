@@ -5,7 +5,7 @@ import pygame
 import random
 import muselsl
 
-from pylsl import StreamInfo, StreamInlet, resolve_stream
+from pylsl import StreamInfo, StreamInlet, resolve_stream, StreamOutlet
 
 # --------------Start the Muse connection
 #muse = muselsl.stream.connect()
