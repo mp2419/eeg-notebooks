@@ -54,7 +54,7 @@ while running:
     if pygame.time.get_ticks() > end_time:
         print(samples, len(samples))
         running = False
-
+#uella
 # Exit pygame
 pygame.quit()
 
