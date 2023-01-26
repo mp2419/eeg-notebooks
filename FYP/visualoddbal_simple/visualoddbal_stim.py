@@ -62,8 +62,8 @@ def show_instructions():
 def present(duration=120):
     print("start printing", file=sys.stderr)
     # Create markers stream outlet
-    info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
-    info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
+    #info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
+    #info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
     # outlet = StreamOutlet(info)
 
 
@@ -90,7 +90,7 @@ def present(duration=120):
 
     # Run the experiment for 10 seconds
     print("Run visual experiement")
-    end_time = pygame.time.get_ticks() + 10000
+    end_time = pygame.time.get_ticks() + (duration*1000)
 
     # Create a list of circles
     circles = []
@@ -98,33 +98,32 @@ def present(duration=120):
     y = size[1]/2
     radius = 200
     samples = []
-    color_name = random.choice(['red', 'blue'])
-    color = red if color_name == 'red' else blue 
+    n = 0
+    color = random.choice([red, blue])
     circles.append((x, y, radius, color))
     move = pygame.USEREVENT+1
     pygame.time.set_timer(move, 500)
     if(color == blue):
         samples.append(pygame.time.get_ticks())
         # outlet.push_sample([markernames[label]], timestamp)
-        outlet.push_sample([new_blue], pygame.time.get_ticks())
+        #outlet.push_sample([new_blue], pygame.time.get_ticks())
         n = n+1
         print("New blue circle, number ", n)
 
     #-----------loop
     running = True
     while running:
-        new_blue = 1
+        # print("old colour, new run", color)        
         #     # Intertrial interval
         #     core.wait(iti + np.random.rand() * jitter)
         for event in pygame.event.get():
             if event.type == move:
-                color_name = random.choice(['red', 'blue'])
-                color1 = red if color_name == 'red' else blue 
+                color1 = random.choice([red, blue])
                 if color == red: 
                     if color1 == blue: 
                         samples.append(pygame.time.get_ticks())
                         # outlet.push_sample([markernames[label]], timestamp)
-                        outlet.push_sample([new_blue], timestamp)
+                        #outlet.push_sample([new_blue], timestamp)
                         n = n+1
                         print("New blue circle, number ", n)
                 color = color1
@@ -132,7 +131,7 @@ def present(duration=120):
                 running = False
 
         # Draw the circles
-        pygame.draw.circle(screen, red, (x, y), radius)
+        pygame.draw.circle(screen, color, (x, y), radius)
 
         # Update the screen
         pygame.display.flip()
