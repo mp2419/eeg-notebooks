@@ -62,8 +62,8 @@ def show_instructions():
 def present(duration=120):
     print("start printing", file=sys.stderr)
     # Create markers stream outlet
-    # info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
-    # info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
+    info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
+    info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
     # outlet = StreamOutlet(info)
 
 

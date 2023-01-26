@@ -4,6 +4,14 @@
 import pygame
 import random
 from pygame.locals import *
+import numpy as np
+from pandas import DataFrame, read_csv
+#from psychopy import visual, core, event
+from pylsl import StreamInfo, StreamOutlet
+import pygame
+import random
+from pygame.locals import *
+#from eegnb import stimuli, experiments
 
 def show_instructions():
     instruction_text = "Welcome! You will see displayed circles of different colours, please count the blue ones. Occasionally, you will hear a left or right indicator. Please press the appropriate arrow key to continue the test. Stay still, focus on the centre of the screen, and try not to blink. This test will run for 10 seconds. Press spacebar to continue."
@@ -32,6 +40,12 @@ def show_instructions():
                     return
         pygame.display.update()
 
+
+
+#Create markers stream outlet
+#info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
+info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
+outlet = StreamOutlet(info)
 
 #---------Initialize pygame
 pygame.init()
@@ -73,7 +87,9 @@ while running:
         if event.type == move:
             color1 = random.choice([red, blue])
             if color == red: 
-                if color1 == blue: samples.append(pygame.time.get_ticks())
+                if color1 == blue: 
+                    samples.append(pygame.time.get_ticks())
+                    outlet.push_sample([1], pygame.time.get_ticks())
             color = color1
         if event.type == pygame.QUIT:
             running = False
