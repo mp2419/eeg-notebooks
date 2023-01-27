@@ -26,11 +26,6 @@ import random
 from pygame.locals import *
 from eegnb import stimuli, experiments
 
-# stim_dir = os.path.split(stimuli.__file__)[0]
-# exp_dir = os.path.split(experiments.__file__)[0]
-
-# fixed stim order list file
-#fso_list_file = os.path.join(exp_dir, "visual_n170", "n170_fixedstimorder_list.csv")
 def show_instructions():
     instruction_text = "Welcome! You will see displayed circles of different colours, please count the blue ones. Occasionally, you will hear a left or right indicator. Please press the appropriate arrow key to continue the test. Stay still, focus on the centre of the screen, and try not to blink. This test will run for 10 seconds. Press spacebar to continue."
     white = (255, 255, 255)
@@ -62,9 +57,8 @@ def show_instructions():
 def present(duration=120):
     print("start printing", file=sys.stderr)
     # Create markers stream outlet
-    #info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
-    #info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
-    # outlet = StreamOutlet(info)
+    info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
+    outlet = StreamOutlet(info)
 
 
     #---------Initialize pygame
@@ -93,6 +87,7 @@ def present(duration=120):
     end_time = pygame.time.get_ticks() + (duration*1000)
 
     # Create a list of circles
+    new_blue = 1
     circles = []
     x = size[0]/2
     y = size[1]/2
@@ -105,10 +100,9 @@ def present(duration=120):
     pygame.time.set_timer(move, 500)
     if(color == blue):
         samples.append(pygame.time.get_ticks())
-        # outlet.push_sample([markernames[label]], timestamp)
-        #outlet.push_sample([new_blue], pygame.time.get_ticks())
+        outlet.push_sample([new_blue], pygame.time.get_ticks())
         n = n+1
-        print("New blue circle, number ", n)
+        #print("New blue circle, number ", n)
 
     #-----------loop
     running = True
@@ -122,10 +116,9 @@ def present(duration=120):
                 if color == red: 
                     if color1 == blue: 
                         samples.append(pygame.time.get_ticks())
-                        # outlet.push_sample([markernames[label]], timestamp)
-                        #outlet.push_sample([new_blue], timestamp)
+                        outlet.push_sample([new_blue], pygame.time.get_ticks())
                         n = n+1
-                        print("New blue circle, number ", n)
+                        # print("New blue circle, number ", n)
                 color = color1
             if event.type == pygame.QUIT:
                 running = False

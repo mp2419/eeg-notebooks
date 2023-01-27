@@ -21,7 +21,7 @@ from eegnb.stimuli import FACE_HOUSE
 from eegnb.experiments import Experiment
 
 
-class VisualOddbal(Experiment.BaseExperiment):
+class VisualOddball(Experiment.BaseExperiment):
 
     def __init__(self, duration=10, eeg: EEG=None, save_fn=None,
             n_trials = 2010, iti = 0.4, soa = 0.3, jitter = 0.2):
@@ -29,7 +29,7 @@ class VisualOddbal(Experiment.BaseExperiment):
         # Set experiment name        
         exp_name = "Visual "
         # Calling the super class constructor to initialize the experiment variables
-        super(VisualOddbal, self).__init__(exp_name, duration, eeg, save_fn, n_trials, iti, soa, jitter)
+        super(VisualOddball, self).__init__(exp_name, duration, eeg, save_fn, n_trials, iti, soa, jitter)
 
     def load_stimulus(self):
         
