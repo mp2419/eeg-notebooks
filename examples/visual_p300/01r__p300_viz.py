@@ -50,6 +50,7 @@ p300_data_path = os.path.join(eegnb_data_path, 'visual-P300', 'eegnb_examples')
 
 # If dataset hasn't been downloaded yet, download it 
 if not os.path.isdir(p300_data_path):
+    print("no path")
     fetch_dataset(data_dir=eegnb_data_path, experiment='visual-P300', site='eegnb_examples');        
 
 

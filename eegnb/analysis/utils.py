@@ -135,7 +135,8 @@ def load_data(
     verbose=1,
     site="local",
     data_dir=None,
-    inc_chans=None
+    inc_chans=None, 
+    direct_path = False
     ) -> RawArray:
     """Load CSV files from the /data directory into a Raw object.
 
@@ -179,8 +180,11 @@ def load_data(
     subject_str = "*" if subject == "all" else f"subject{subject_int:04}"
     session_str = "*" if session == "all" else f"session{session_int:03}"
 
-    recdir = _get_recording_dir(device_name, experiment, subject_str, session_str, site)#, data_dir)
-    data_path = os.path.join(data_dir, recdir, "*.csv")
+    if(direct_path):
+        data_path = data_dir
+    else:
+        recdir = _get_recording_dir(device_name, experiment, subject_str, session_str, site)#, data_dir)
+        data_path = os.path.join(data_dir, recdir, "*.csv")
 
     fnames = glob(str(data_path))
 
