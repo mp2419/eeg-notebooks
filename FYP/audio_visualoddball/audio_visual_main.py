@@ -7,7 +7,7 @@
 # from collections import OrderedDict
 import sys
 sys.path.append("..\\")
-print(sys.path)
+# print(sys.path)
 
 import warnings
 warnings.filterwarnings('ignore')
