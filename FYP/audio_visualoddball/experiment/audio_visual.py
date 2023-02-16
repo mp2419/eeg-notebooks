@@ -1,4 +1,5 @@
 from psychopy import prefs
+from graphics import *
 #change the pref libraty to PTB and set the latency mode to high precision
 prefs.hardware['audioLib'] = 'PTB'
 prefs.hardware['audioLatencyMode'] = 3
@@ -9,39 +10,29 @@ from glob import glob
 from random import choice
 from optparse import OptionParser
 import random
-
+import playsound
+import random
+import time
 import numpy as np
 from pandas import DataFrame
 from psychopy import visual, core, event
 
 from eegnb import generate_save_fn
 from eegnb.devices.eeg import EEG
-from eegnb.stimuli import FACE_HOUSE #TODO 
 
 __title__ = "Audio Visual"
 
 
 def present(duration=120, eeg: EEG=None, save_fn=None,
-            n_trials = 2010, iti = 0.4, soa = 0.3, jitter = 0.2):
+            iti = 0.4, soa = 0.3, jitter = 0.2):
     
     record_duration = np.float32(duration)
-    markernames = [1, 2, 3]
-
-    # Setup trial list
-    image_type = np.random.binomial(1, 0.5, n_trials)
-    trials = DataFrame(dict(image_type=image_type, timestamp=np.zeros(n_trials)))
-
-    def load_image(fn):
-        return visual.ImageStim(win=mywin, image=fn)
+    markernames = ['left', 'right', 'blue', 'red', 'key pressed']
 
     # start the EEG stream, will delay 5 seconds to let signal settle
 
     # Setup graphics
     mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
-
-    faces = list(map(load_image, glob(os.path.join(FACE_HOUSE, "faces", "*_3.jpg"))))
-    houses = list(map(load_image, glob(os.path.join(FACE_HOUSE, "houses", "*.3.jpg"))))
-    stim = [houses, faces]
 
     # Show the instructions screen
     show_instructions(duration)
@@ -59,37 +50,90 @@ def present(duration=120, eeg: EEG=None, save_fn=None,
     start = time()
 
     # Iterate through the events
-    for ii, trial in trials.iterrows():
+    while True:
+        # Chose between visual and audio
+        if random.random() < 0.8:
+            next_event_type = 'visual'
+        else:
+            next_event_type = 'audio'
+
+        # --- Visual Stimulus - Update screen
         if next_event_type == 'visual':
+
             # Inter trial interval
             core.wait(iti + np.random.rand() * jitter)
 
-            # Select and display image
-            label = trials["image_type"].iloc[ii]
-            image = choice(faces if label == 1 else houses)
-            image.draw()
-            
-            mywin.flip()
-
-        elif next_event_type == 'audio':
-            command = None
-            #TODO generate_direction_command()
-
-            perform_audio_stimulus(command)
-
-        # Push sample
-        if eeg:
-            timestamp = time()
-            if eeg.backend == "muselsl":
-                marker = [markernames[label]]
+            # Select colour 
+            colour = random.randint(1, 2)
+            if colour == 1:
+                label = 'blue'
             else:
-                marker = markernames[label]
-            eeg.push_sample(marker=marker, timestamp=timestamp)
+                label = 'red'
+
+            # If new colour, update
+            if label != current_colour: 
+                # get the center point of the window
+                center_point = Point(mywin.getWidth()/2, mywin.getHeight()/2)
+                # create a circle with a radius of 50 and a red color
+                circle = Circle(center_point, 50)
+                circle.setFill(label)
+                # draw the circle to the window
+                circle.draw(mywin)
+                mywin.flip()
+                current_colour = label
+                new = True
+            else:
+                new = False
+
+            # Push sample of visual stimulus
+            if eeg & new:
+                timestamp = time()
+                if eeg.backend == "muselsl":
+                    marker = [markernames[label]]
+                else:
+                    marker = markernames[label]
+                eeg.push_sample(marker=marker, timestamp=timestamp)
+
+
+        # --- Audio Stimulus - Directional Command
+        elif next_event_type == 'audio':
+
+            # Inter trial interval
+            core.wait(iti + np.random.rand() * jitter)
+            direction = random.randint(1, 2)
+            if direction == 1:
+                label = 'right'
+            else:
+                label = 'left'
+
+            key = perform_audio_stimulus(label)
+
+            # Push sample of audio stimulus
+            if eeg:
+                timestamp = time()
+                if eeg.backend == "muselsl":
+                    marker = [markernames[label]]
+                else:
+                    marker = markernames[label]
+                eeg.push_sample(marker=marker, timestamp=timestamp)
+            
+            # Wait for key input
+            event.waitKeys(keyList=key)
+
+            # Push sample of pressed key
+            if eeg:
+                timestamp = time()
+                if eeg.backend == "muselsl":
+                    marker = [markernames['key pressed']]
+                else:
+                    marker = markernames['key pressed']
+                eeg.push_sample(marker=marker, timestamp=timestamp)
 
 
         # offset
         core.wait(soa)
         mywin.flip()
+
         if len(event.getKeys()) > 0 or (time() - start) > record_duration:
             break
 
@@ -135,20 +179,11 @@ def show_instructions(duration):
     mywin.close()
 
 def perform_audio_stimulus(command):
-
-    # graphics
-    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
-
     # Direction
     if command =='right':
         key='right arrow'
-        audio_right.present()
+        playsound.playsound("right_audio.wav", True)
     else:
         key='left arrow'
-        audio_left.present()
-
-    # Wait for key input
-    event.waitKeys(keyList=key)
-
-    mywin.mouseVisible = False
-    mywin.close()
+        playsound.playsound("left_audio.wav", True)
+    return key
