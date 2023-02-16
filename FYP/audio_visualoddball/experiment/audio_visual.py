@@ -34,134 +34,135 @@ def present(duration=120, eeg: EEG=None, save_fn=None,
 
     # Show the instructions screen
     show_instructions(duration)
-
+    print("now open")
     # Setup graphics
     mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
     text = visual.TextStim(win=mywin, text="Starting the test...", color=[-1, -1, -1])
     text.draw()
     mywin.flip()
+    
     current_colour = None
-
-    if eeg:
+    if eeg_device:
         if save_fn is None:  # If no save_fn passed, generate a new unnamed save file
             random_id = random.randint(1000,10000)
-            save_fn = generate_save_fn(eeg.device_name, "audio_visual", random_id, random_id, "unnamed")
+            save_fn = generate_save_fn(eeg_device.device_name, "audio_visual", random_id, random_id, "unnamed")
             print(
                 f"No path for a save file was passed to the experiment. Saving data to {save_fn}"
             )
-        eeg.start(save_fn, duration=record_duration + 5)
-
+        eeg_device.start(save_fn, duration=record_duration + 5)
+    print("now start")
     # Start EEG Stream, wait for signal to settle, and then pull timestamp for start point
     start = time.time()
 
     # Iterate through the events
-    while True:
-        # Chose between visual and audio
-        if random.random() < 0.8:
-            next_event_type = 'visual'
-        else:
-            next_event_type = 'audio'
+    # while True:
+    #     # Chose between visual and audio
+    #     if random.random() < 0.8:
+    #         next_event_type = 'visual'
+    #     else:
+    #         next_event_type = 'audio'
 
-        # --- Visual Stimulus - Update screen
-        if next_event_type == 'visual':
+    #     # --- Visual Stimulus - Update screen
+    #     if next_event_type == 'visual':
 
-            # Inter trial interval
-            core.wait(iti + np.random.rand() * jitter)
+    #         # Inter trial interval
+    #         core.wait(iti + np.random.rand() * jitter)
 
-            # Select colour 
-            colour = random.randint(1, 2)
-            if colour == 1:
-                label = 'blue'
-                marker_idx = 2
-            else:
-                label = 'red'
-                marker_idx = 3
+    #         # Select colour 
+    #         colour = random.randint(1, 2)
+    #         if colour == 1:
+    #             label = 'blue'
+    #             marker_idx = 2
+    #         else:
+    #             label = 'red'
+    #             marker_idx = 3
 
-            # If new colour, update
-            if label != current_colour: 
-                # Define the circle stimulus
-                circle = visual.Circle(mywin, radius=50, fillColor=label, lineColor=None)
-                # Draw the circle at the center of the screen
-                circle.pos = [mywin.size[0]/2 , mywin.size[1]/2]
-                # Display the circle stimulus and wait for a key press
-                circle.draw()
-                # win.flip()
-                # event.waitKeys()
-                # # get the center point of the window
-                # center_point = Point(mywin.size[0]/2 , mywin.size[1]/2)
-                # # create a circle with a radius of 50 and a red color
-                # circle = Circle(center_point, 50)
-                # circle.setFill(label)
-                # # draw the circle to the window
-                # circle.draw(mywin)
-                mywin.flip()
-                current_colour = label
-                new = True
-            else:
-                new = False
+    #         # If new colour, update
+    #         if label != current_colour: 
+    #             # Define the circle stimulus
+    #             circle = visual.Circle(mywin, radius=50, fillColor=label, lineColor=None)
+    #             # Draw the circle at the center of the screen
+    #             circle.pos = [mywin.size[0]/2 , mywin.size[1]/2]
+    #             # Display the circle stimulus and wait for a key press
+    #             circle.draw()
+    #             # win.flip()
+    #             # event.waitKeys()
+    #             # # get the center point of the window
+    #             # center_point = Point(mywin.size[0]/2 , mywin.size[1]/2)
+    #             # # create a circle with a radius of 50 and a red color
+    #             # circle = Circle(center_point, 50)
+    #             # circle.setFill(label)
+    #             # # draw the circle to the window
+    #             # circle.draw(mywin)
+    #             mywin.flip()
+    #             current_colour = label
+    #             new = True
+    #         else:
+    #             new = False
 
-            # Push sample of visual stimulus
-            if new:
-                if eeg:
-                    timestamp = time.time() #- start ?
-                    if eeg.backend == "muselsl":
-                        marker = [markernames[marker_idx]]
-                    else:
-                        marker = markernames[marker_idx]
-                    eeg.push_sample(marker=marker, timestamp=timestamp)
+    #         # Push sample of visual stimulus
+    #         if new:
+    #             if eeg:
+    #                 timestamp = time.time() #- start ?
+    #                 if eeg.backend == "muselsl":
+    #                     marker = [markernames[marker_idx]]
+    #                 else:
+    #                     marker = markernames[marker_idx]
+    #                 eeg.push_sample(marker=marker, timestamp=timestamp)
 
 
-        # --- Audio Stimulus - Directional Command
-        elif next_event_type == 'audio':
+    #     # --- Audio Stimulus - Directional Command
+    #     elif next_event_type == 'audio':
 
-            # Inter trial interval
-            core.wait(iti + np.random.rand() * jitter)
-            direction = random.randint(1, 2)
-            if direction == 1:
-                label = 'right'
-                marker_idx = 1
-            else:
-                label = 'left'
-                marker_idx = 0
+    #         # Inter trial interval
+    #         core.wait(iti + np.random.rand() * jitter)
+    #         direction = random.randint(1, 2)
+    #         if direction == 1:
+    #             label = 'right'
+    #             marker_idx = 1
+    #         else:
+    #             label = 'left'
+    #             marker_idx = 0
 
-            key = perform_audio_stimulus(label)
+    #         key = perform_audio_stimulus(label)
 
-            # Push sample of audio stimulus
-            if eeg:
-                timestamp = time.time()   
-                if eeg.backend == "muselsl":
-                    marker = [markernames[marker_idx]]
-                else:
-                    marker = markernames[marker_idx]
-                eeg.push_sample(marker=marker, timestamp=timestamp)
+    #         # Push sample of audio stimulus
+    #         if eeg:
+    #             timestamp = time.time()   
+    #             if eeg.backend == "muselsl":
+    #                 marker = [markernames[marker_idx]]
+    #             else:
+    #                 marker = markernames[marker_idx]
+    #             eeg.push_sample(marker=marker, timestamp=timestamp)
             
-            # Wait for key input
-            event.waitKeys(keyList=key)
+    #         # Wait for key input
+    #         event.waitKeys(keyList=key)
 
-            marker_idx = 4
-            # Push sample of pressed key
-            if eeg:
-                timestamp = time.time()
-                if eeg.backend == "muselsl":
-                    marker = [markernames[marker_idx]]
-                else:
-                    marker = markernames[marker_idx]
-                eeg.push_sample(marker=marker, timestamp=timestamp)
+    #         marker_idx = 4
+    #         # Push sample of pressed key
+    #         if eeg:
+    #             timestamp = time.time()
+    #             if eeg.backend == "muselsl":
+    #                 marker = [markernames[marker_idx]]
+    #             else:
+    #                 marker = markernames[marker_idx]
+    #             eeg.push_sample(marker=marker, timestamp=timestamp)
 
 
-        # offset
-        core.wait(soa)
-        mywin.flip()
+    #     # offset
+    #     core.wait(soa)
+    #     #mywin.flip()
 
-        if len(event.getKeys()) > 0 or (time.time() - start) > record_duration:
-            break
+    #     if len(event.getKeys()) > 0 or (time.time() - start) > record_duration:
+    #         break
 
-        event.clearEvents()
-
+    #     event.clearEvents()
+    print("now stop")
     # Cleanup
     if eeg:
+        print("now close")
         eeg.stop()
-
+    
     mywin.close()
 
 
@@ -193,7 +194,7 @@ def show_instructions(duration):
     text.draw()
     mywin.flip()
     event.waitKeys(keyList="space")
-    # mywin.close()
+    mywin.close()
 
 def perform_audio_stimulus(command):
     # Direction
