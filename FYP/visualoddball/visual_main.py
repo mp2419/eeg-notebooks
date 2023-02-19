@@ -5,7 +5,7 @@ import eegnb
 from eegnb import generate_save_fn
 from eegnb.devices.eeg import EEG
 from eegnb.experiments.visual_n170 import n170
-from FYP.visualoddball import visualoddball, visualoddball_stim
+from FYP.visualoddball import visualoddbal_utils, z_visualoddball
 
 # -- Define variables
 board_name = "muse2"
@@ -20,4 +20,4 @@ record_duration = 10
 #print(save_fn)
 
 # -- Start Visual Experiment
-visualoddbal_stim.present(duration=record_duration)
+visualoddbal_utils.present(duration=record_duration)

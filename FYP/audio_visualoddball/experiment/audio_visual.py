@@ -40,16 +40,16 @@ def present(duration=120, eeg: EEG=None, save_fn=None,
     text = visual.TextStim(win=mywin, text="Starting the test...", color=[-1, -1, -1])
     text.draw()
     mywin.flip()
-    
+
     current_colour = None
-    if eeg_device:
+    if eeg:
         if save_fn is None:  # If no save_fn passed, generate a new unnamed save file
             random_id = random.randint(1000,10000)
-            save_fn = generate_save_fn(eeg_device.device_name, "audio_visual", random_id, random_id, "unnamed")
+            save_fn = generate_save_fn(eeg.device_name, "audio_visual", random_id, random_id, "unnamed")
             print(
                 f"No path for a save file was passed to the experiment. Saving data to {save_fn}"
             )
-        eeg_device.start(save_fn, duration=record_duration + 5)
+        eeg.start(save_fn, duration=record_duration + 5)
     print("now start")
     # Start EEG Stream, wait for signal to settle, and then pull timestamp for start point
     start = time.time()

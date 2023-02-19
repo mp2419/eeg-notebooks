@@ -138,65 +138,66 @@ def present(duration=120):
     pygame.quit()
 
 
-# def main():
-#     parser = OptionParser()
+def present_other(duration=120):
 
-#     parser.add_option(
-#         "-d",
-#         "--duration",
-#         dest="duration",
-#         type="int",
-#         default=120,
-#         help="duration of the recording in seconds.",
-#     )
+    # Create markers stream outlet
+    # info = StreamInfo('Markers', 'Markers', 1, 0, 'int32', 'myuidw43536')
+    info = StreamInfo("Visual_Markers", "Markers", 1, 0, "int32", "source_visual2000")
+    outlet = StreamOutlet(info)
 
-#     (options, args) = parser.parse_args()
-#     present(options.duration)
+    # markernames = [1, 2]
+    start = time()
 
+    # Set up trial parameters
+    # n_trials = 2010
+    iti = 5#0.8
+    soa = 0.2
+    jitter = 0.2
+    record_duration = np.float32(duration)
+    red = (255, 0, 0)
+    blue = (0, 0, 255)
+    black = (255,255,255)
 
-# if __name__ == "__main__":
-#     main()
+    #-----------pyshopy game 
 
+    win = visual.Window([1600, 900], monitor="testMonitor", units="deg", winType="pygame", fullscr=True, color=black)
+    running = True
+    n = 0
+    prev_color = red
 
-    # #-----------pyshopy game 
+    while running:
+        running = True
+        # trialnum, filename, facehouse, girlboy = trial.values
+        # filename = os.path.join(stim_dir, filename)
+        new_blue = 1
+        # Intertrial interval
+        core.wait(iti + np.random.rand() * jitter)
 
-    # win = visual.Window([1600, 900], monitor="testMonitor", units="deg", winType="pygame", fullscr=True, color=black)
-    # running = True
-    # n = 0
-    # prev_color = red
+        # Select circle to display
+        color = random.choice([red, blue])
+        circle = visual.Circle(win=win,units="pix",radius=150,fillColor=color,lineColor=[-1, -1, -1])
+        circle.draw()
 
-    # while running:
-    #     running = True
-    #     # trialnum, filename, facehouse, girlboy = trial.values
-    #     # filename = os.path.join(stim_dir, filename)
-    #     new_blue = 1
-    #     # Intertrial interval
-    #     core.wait(iti + np.random.rand() * jitter)
+        if prev_color == red:
+            if color == blue:
+                # Send marker
+                timestamp = time()
+                # outlet.push_sample([markernames[label]], timestamp)
+                outlet.push_sample([new_blue], timestamp)
+                n = n+1
+                print("New blue circl, number ", n)
 
-    #     # Select circle to display
-    #     color = random.choice([red, blue])
-    #     circle = visual.Circle(win=win,units="pix",radius=150,fillColor=color,lineColor=[-1, -1, -1])
-    #     circle.draw()
+        prev_color = color
 
-    #     if prev_color == red:
-    #         if color == blue:
-    #             # Send marker
-    #             timestamp = time()
-    #             # outlet.push_sample([markernames[label]], timestamp)
-    #             outlet.push_sample([new_blue], timestamp)
-    #             n = n+1
-    #             print("New blue circl, number ", n)
+        win.flip()
 
-    #     prev_color = color
+        # offset
+        core.wait(soa)
+        win.flip()
+        if len(event.getKeys()) > 0 or (time() - start) > record_duration:
+            running=False
+        # event.clearEvents()
 
-    #     win.flip()
+    # Cleanup
+    win.close()
 
-    #     # offset
-    #     core.wait(soa)
-    #     win.flip()
-    #     if len(event.getKeys()) > 0 or (time() - start) > record_duration:
-    #         running=False
-    #event.clearEvents()
-
-    # # Cleanup
-    # win.close()
