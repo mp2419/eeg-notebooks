@@ -14,8 +14,8 @@ experiment = "audio_visual"
 data_path = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data', 'AudioVisual')
 
 
-file_name_raw = os.path.join(data_path, '2_recording.csv')
-file_name_marked = os.path.join(data_path, '2_markers.csv')
+file_name_raw = os.path.join(data_path, '3_recording.csv')
+file_name_marked = os.path.join(data_path, '3_markers.csv')
 record_duration = 100
 
 
