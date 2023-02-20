@@ -75,7 +75,7 @@ def record_data(duration, file_name):
                 break
 
 # Define a function to insert markers at random intervals into the data from the queue
-def present_experiment(duration, file_name, iti = 0.4, soa = 0.3, jitter = 0.2):
+def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
     
     # Open a CSV file for writing
     with open(file_name, 'w', newline='') as file:
