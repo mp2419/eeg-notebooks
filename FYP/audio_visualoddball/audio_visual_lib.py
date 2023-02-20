@@ -158,7 +158,7 @@ def present_experiment(duration, file_name, iti = 0.4, soa = 0.3, jitter = 0.2):
             core.wait(soa)
             #mywin.flip()
 
-            if len(event.getKeys()) > 0 or (time.time() - start_time) > duration:
+            if  (time.time() - start_time) > duration:
                 print("Stopped writing data at time ", time.time())
                 break
 
