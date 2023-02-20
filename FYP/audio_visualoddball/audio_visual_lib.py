@@ -180,7 +180,7 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
 
     # time.sleep(5)
 
-    present_experiment(60, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2)
+    present_experiment(80, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2)
 
     # # - Start the marker insertion thread
     # # stimulus_thread = threading.Thread(target=present_experiment, args=(duration, file_name_marked))
