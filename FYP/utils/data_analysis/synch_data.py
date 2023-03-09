@@ -6,7 +6,7 @@ import csv
 import numpy as np
 
 def merge_data(filename_raw, filename_marked, filename_union):
-    
+
     # Open the two CSV files and the output CSV file
     with open(filename_raw, 'r') as raw, open(filename_marked, 'r') as markers, open(filename_union, 'w', newline='') as merged:
         # Create CSV readers for both files and a writer for the output file
@@ -55,7 +55,7 @@ def merge_data(filename_raw, filename_marked, filename_union):
                     idx1 = idx1+1
                     rows = reader2[idx1]
             else:
-                row_newfile = [i[0],i[1],i[2],i[3],i[4],'', '']
+                row_newfile = [i[0],i[1],i[2],i[3],i[4],'n/a', '']
             
             writer.writerow(row_newfile)
         
