@@ -58,6 +58,10 @@ def record_data(duration, file_name):
         ch = ch.next_sibling()
         ch_names.append(ch.child_value('label'))
 
+    file_folder = os.path.dirname(file_name)
+    if not os.path.exists(file_folder):
+        os.makedirs(file_folder)
+
     # Save data
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file)
@@ -76,7 +80,12 @@ def record_data(duration, file_name):
 
 # Define a function to insert markers at random intervals into the data from the queue
 def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
-    
+
+    file_folder = os.path.dirname(file_name)
+
+    if not os.path.exists(file_folder):
+        os.makedirs(file_folder)
+
     # Open a CSV file for writing
     with open(file_name, 'w', newline='') as file:
         start_time = time.time()
@@ -92,6 +101,7 @@ def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
         text.draw()
         mywin.flip()
         current_colour = None
+        blue_n = 0 
 
         time.sleep(2)
         # Iterate through the events
@@ -130,6 +140,8 @@ def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
                 if new:
                     timestamp = time.time()
                     writer.writerow([timestamp, label])
+                    if label == 'blue':
+                        blue_n += 1
 
 
             # --- Audio Stimulus - Directional Command
@@ -166,6 +178,8 @@ def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
 
         mywin.close()
 
+    return blue_n
+
 
 def run_experiment(duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
 file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv'):
@@ -175,12 +189,12 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
     print("Experiment Started at time ", time.time())
 
     # - Start the recording thread
-    recording_thread = threading.Thread(target=record_data, args=(duration,file_name_raw))
+    recording_thread = threading.Thread(target=record_data, args=(duration+5,file_name_raw))
     recording_thread.start()
 
     # time.sleep(5)
 
-    present_experiment(80, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2)
+    blue_n = present_experiment(duration, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2)
 
     # # - Start the marker insertion thread
     # # stimulus_thread = threading.Thread(target=present_experiment, args=(duration, file_name_marked))
@@ -189,8 +203,10 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
     # - Wait for both threads to finish
     recording_thread.join()
     # # stimulus_thread.join()
+    blue_n_reported = return_blue_number()
 
     print("Experiment Completed at time ", time.time())
+    print("Number of blue cirlces reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
 
 
 def show_instructions(duration):
@@ -198,9 +214,10 @@ def show_instructions(duration):
     instruction_text = """
     Welcome to the Audio Visual experiment! 
 
-    You will see displayed circles of different colours, please count the blue ones.
+    You will see displayed circles of different colours, please COUNT the BLUE circles.
 
-    Occasionally, you will hear a left or right indicator, please press the appropriate arrow key to continue the test. 
+    Occasionally, you will hear a left or right indicator, please PRESS the LEFT or RIGHT arrow key accordingly.
+     
  
     Stay still, focus on the centre of the screen, and try not to blink. 
 
@@ -232,3 +249,41 @@ def perform_audio_stimulus(command):
         key='left arrow'
         playsound.playsound("FYP\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
     return key
+
+def return_blue_number():
+
+    # graphics
+    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+    mywin.mouseVisible = False
+
+    key_number = ''
+
+    while True:
+        instruction_text = """
+        Well Done! 
+
+        Please report the number of BLUE circles 
+        
+        you have counted and press SPACE.
+
+        Number of blue circles: %s
+        
+        """
+        instruction_text = instruction_text % key_number
+
+        # Instructions
+        text = visual.TextStim(win=mywin, text=instruction_text, color=[-1, -1, -1])
+        text.draw()
+        mywin.flip()
+        keys = event.waitKeys()  # wait for a key to be pressed
+
+        if 'space' in keys:  # check if the escape key was pressed
+            break
+
+        if keys[0].isdigit():  # check if the key pressed is a number
+            key_number += keys[0]  # append the number to key_number
+
+
+    mywin.close()
+    
+    return key_number
