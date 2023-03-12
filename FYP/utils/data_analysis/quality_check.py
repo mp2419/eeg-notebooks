@@ -69,5 +69,6 @@ def check_quality(duration = 10):
 
     # Print the EEG quality and noise sources
     print("EEG quality (signal-to-noise ratio):", snr)
+    # EEG quality (signal-to-noise ratio): [ 0.34595192  0.38935046  0.42858711  0.6477837  38.99336141]
     
 check_quality()
