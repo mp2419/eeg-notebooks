@@ -15,6 +15,8 @@ from pylsl import StreamInlet, resolve_byprop  # Module to receive EEG data
 from psychopy import prefs
 from graphics import *
 
+# TODO FOR MORE CHECKS AND PLOT:
+# https://mne.tools/1.0/generated/mne.time_frequency.psd_multitaper.html#footcite-slepian1978
 
 def check_quality(duration = 10):
 
