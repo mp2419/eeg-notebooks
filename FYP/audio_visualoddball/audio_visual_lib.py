@@ -29,6 +29,7 @@ from psychopy import visual, core, event
 from psychopy.visual.circle import Circle
 from eegnb import generate_save_fn
 from eegnb.devices.eeg import EEG
+import utils.data_analysis.synch_data as synch
 
 __title__ = "Audio Visual"
 
@@ -79,7 +80,7 @@ def record_data(duration, file_name):
                 break
 
 # Define a function to insert markers at random intervals into the data from the queue
-def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
+def present_experiment(trial, duration, file_name,  mywin,  iti = 0.7, soa = 0.3, jitter = 0.2):
 
     file_folder = os.path.dirname(file_name)
 
@@ -96,8 +97,9 @@ def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
         print("Start writing data at time ", start_time)
 
         # Start UI 
-        mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
-        text = visual.TextStim(win=mywin, text="Starting the test...", color=[-1, -1, -1])
+        # mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+        instruction_text = "Starting trial number %s..." % trial
+        text = visual.TextStim(win=mywin, text=instruction_text, color=[-1, -1, -1])
         text.draw()
         mywin.flip()
         current_colour = None
@@ -176,25 +178,27 @@ def present_experiment(duration, file_name, iti = 0.7, soa = 0.3, jitter = 0.2):
 
             event.clearEvents()
 
-        mywin.close()
+        text = visual.TextStim(win=mywin, text="Trial completed", color=[-1, -1, -1])
+        text.draw()
+        mywin.flip()
+        # mywin.close()
 
     return blue_n
 
-
-def run_experiment(duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
-file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv'):
-
-    show_instructions(duration)
+def run_trial(duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
+file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_synched.csv'):
+    
+    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+    show_instructions(duration, mywin)
     
     print("Experiment Started at time ", time.time())
 
     # - Start the recording thread
     recording_thread = threading.Thread(target=record_data, args=(duration+5,file_name_raw))
     recording_thread.start()
-
+    trial = 1
     # time.sleep(5)
-
-    blue_n = present_experiment(duration, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2)
+    blue_n = present_experiment(trial, duration, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2, mywin = mywin)
 
     # # - Start the marker insertion thread
     # # stimulus_thread = threading.Thread(target=present_experiment, args=(duration, file_name_marked))
@@ -203,13 +207,13 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
     # - Wait for both threads to finish
     recording_thread.join()
     # # stimulus_thread.join()
-    blue_n_reported = return_blue_number()
-
+    blue_n_reported = return_blue_number(mywin)
+    mywin.close()
     print("Experiment Completed at time ", time.time())
     print("Number of blue cirlces reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
+    synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
 
-
-def show_instructions(duration):
+def show_instructions(duration,  mywin ):
 
     instruction_text = """
     Welcome to the Audio Visual experiment! 
@@ -229,7 +233,7 @@ def show_instructions(duration):
     instruction_text = instruction_text % duration
 
     # graphics
-    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+    # mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
 
     mywin.mouseVisible = False
 
@@ -238,7 +242,7 @@ def show_instructions(duration):
     text.draw()
     mywin.flip()
     event.waitKeys(keyList="space")
-    mywin.close()
+    # mywin.close()
 
 def perform_audio_stimulus(command):
     # Direction
@@ -250,10 +254,10 @@ def perform_audio_stimulus(command):
         playsound.playsound("FYP\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
     return key
 
-def return_blue_number():
+def return_blue_number( mywin ):
 
     # graphics
-    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+     # mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
     mywin.mouseVisible = False
 
     key_number = ''
@@ -284,6 +288,37 @@ def return_blue_number():
             key_number += keys[0]  # append the number to key_number
 
 
-    mywin.close()
+    # mywin.close()
     
     return key_number
+
+def run_experiement(duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
+file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_synched.csv'):
+    
+    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+    show_instructions(duration, mywin)
+    for trial in range([1, 3]):
+        
+        print("Experiment Started at time ", time.time())
+
+        # - Start the recording thread
+        recording_thread = threading.Thread(target=record_data, args=(duration+5, file_name_raw))
+        recording_thread.start()
+
+        # time.sleep(5)
+        blue_n = present_experiment(trial, duration, file_name_marked, iti = 0.4, soa = 0.3, jitter = 0.2, mywin = mywin)
+
+        # # - Start the marker insertion thread
+        # # stimulus_thread = threading.Thread(target=present_experiment, args=(duration, file_name_marked))
+        # # stimulus_thread.start()
+
+        # - Wait for both threads to finish
+        recording_thread.join()
+        # # stimulus_thread.join()
+        blue_n_reported = return_blue_number(mywin)
+        mywin.close()
+        print("Experiment Completed at time ", time.time())
+        print("Number of blue cirlces reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
+    
+    synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
+

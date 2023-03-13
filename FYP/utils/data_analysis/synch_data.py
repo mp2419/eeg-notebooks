@@ -60,7 +60,7 @@ def merge_data(filename_raw, filename_marked, filename_union):
 
     print(" -> New merged file at ", filename_union)
 
-    return filename_union
+    # return filename_union
 
 # new_file = merge_data(filename_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\2_recording.csv', 
 #             filename_marked =  'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\2_markers.csv',
