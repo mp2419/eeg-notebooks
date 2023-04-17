@@ -22,3 +22,6 @@ htmlcov
 
 # PyCharm
 .idea/
+
+# csv
+FYP/data/*.csv
