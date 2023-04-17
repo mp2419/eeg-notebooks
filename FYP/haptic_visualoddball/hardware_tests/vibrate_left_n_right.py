@@ -23,7 +23,7 @@ def vibrate(direction):
     while time.time() - start_time < 5:
 
         ser.write(bytes('analogWrite '+ str(motorPin) + ' ' + str(pwmValue) + '\n', 'utf-8'))
-        ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(pwmValue) + '\n', 'utf-8'))
+        ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(0) + '\n', 'utf-8'))
         ser.write(b'digitalWrite 13 HIGH\n')
         time.sleep(0.5)
         pwmValue += 128
@@ -33,7 +33,7 @@ def vibrate(direction):
 
     print("Done")
     ser.write(bytes('analogWrite '+ str(motorPin) + ' 0\n', 'utf-8'))
-    ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(pwmValue) + '\n', 'utf-8'))
+    ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(0) + '\n', 'utf-8'))
 
     ser.write(b'digitalWrite 13 LOW\n')
     ser.close()
