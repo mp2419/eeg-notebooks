@@ -1,38 +1,29 @@
 import serial
 import time
 
-def vibrate(direction):
-    ser = serial.Serial('COM9', 9600) 
-    motorPin_left = 9
-    motorPin_right = 5
-    pwmValue = 0
+ser = serial.Serial('COM9', 9600) 
+motorPin = 9
+pwmValue = 0
 
-    if (direction == 'left'):
-        motorPin = motorPin_left
-    else:
-        motorPin = motorPin_right
+ser.write(bytes('pinMode '+ str(motorPin) + ' OUTPUT\n', 'utf-8'))
+start_time = time.time()
+print("Vibrate")
 
-    ser.write(bytes('pinMode '+ str(motorPin) + ' OUTPUT\n', 'utf-8'))
-    start_time = time.time()
-    print("Vibrate", direction)
+while time.time() - start_time < 10:
 
-    while time.time() - start_time < 5:
+    ser.write(bytes('analogWrite '+ str(motorPin) + ' ' + str(pwmValue) + '\n', 'utf-8'))
+    ser.write(b'digitalWrite 13 HIGH\n')
+    time.sleep(0.5)
+    pwmValue += 128
+    if pwmValue > 255:
+        pwmValue = 0
 
-        ser.write(bytes('analogWrite '+ str(motorPin) + ' ' + str(pwmValue) + '\n', 'utf-8'))
-        ser.write(b'digitalWrite 13 HIGH\n')
-        time.sleep(0.5)
-        pwmValue += 128
-        if pwmValue > 255:
-            pwmValue = 0
+print("Done")
+ser.write(bytes('analogWrite '+ str(motorPin) + ' 0\n', 'utf-8'))
+ser.write(b'digitalWrite 13 LOW\n')
+ser.close()
 
-    print("Done")
-    ser.write(bytes('analogWrite '+ str(motorPin) + ' 0\n', 'utf-8'))
-    ser.write(b'digitalWrite 13 LOW\n')
-    ser.close()
 
-vibrate("left")
-time.sleep(2)
-vibrate("right")
 
 
 
