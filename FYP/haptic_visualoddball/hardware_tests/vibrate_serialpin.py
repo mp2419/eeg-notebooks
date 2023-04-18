@@ -1,36 +1,33 @@
 import serial
 import time
 
-## TODO SEE https://forum.arduino.cc/t/pc-arduino-comms-using-python-updated/574496
-
 def vibrate(direction):
-    # set up the serial connection
+    # - connect to Arduino -
     ser = serial.Serial('COM9', 9600,  timeout=10)
+    start_time = time.time()
+    print("Vibrate ", direction)
 
-    if direction == "left":
-        # send a command to enable PWM output on pin 9
-        ser.write(b'9\n')
-        print("left")
-    elif direction == "right":
-        # send a command to enable PWM output on pin 5
-        ser.write(b'5\n')
-        print("right")
-    response = ser.readline().decode().strip()
-    print(response)
-    response = ser.readline().decode().strip()
-    print(response)
+    # - RUN -
+    while time.time() - start_time < 5:
+        if direction == "left":
+            ser.write(b'9\n')
+        elif direction == "right":
+            ser.write(b'5\n')
+        # bytesToRead = ser.inWaiting()
+        # data=ser.read(bytesToRead)
+        # print(data, " Vibrate")
+        time.sleep(0.5)
 
-    time.sleep(60)
-
-    # send a command to disable PWM output
-    ser.write(b'1\n')
-    response = ser.readline().decode().strip()
-    print(response)
-
-    # close the serial connection
+    # - STOP -
+    while time.time() - (start_time) < 7:
+        ser.write(b'1\n')
+        # bytesToRead = ser.inWaiting()
+        # ser.read(bytesToRead)
+        # print(data, " Done")
     ser.close()
 
-vibrate("left")
-time.sleep(2)
-vibrate("right")
+# - Test -
+# vibrate("left")
+# time.sleep(2)
+# vibrate("right")
 

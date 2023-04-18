@@ -19,11 +19,16 @@ def vibrate(direction):
     print("Vibrate", direction)
     ser.write(bytes('pinMode '+ str(motorPin) + ' OUTPUT\n', 'utf-8'))
     ser.write(bytes('pinMode '+ str(motorPin_other) + ' OUTPUT\n', 'utf-8'))
+    ser.write(bytes('analogWrite '+ str(motorPin) + str(0) + '\n',  'utf-8'))
+    ser.write(bytes('analogWrite '+ str(motorPin_other) + str(0) + '\n',   'utf-8'))
 
     while time.time() - start_time < 5:
-
+        # resp=str(ser.readline())
+        # print(resp)
+        bytesToRead = ser.inWaiting()
+        data=ser.read(bytesToRead)
+        print(data)
         ser.write(bytes('analogWrite '+ str(motorPin) + ' ' + str(pwmValue) + '\n', 'utf-8'))
-        ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(0) + '\n', 'utf-8'))
         ser.write(b'digitalWrite 13 HIGH\n')
         time.sleep(0.5)
         pwmValue += 128
@@ -32,21 +37,22 @@ def vibrate(direction):
             pwmValue = 0
 
     print("Done")
-    ser.write(bytes('analogWrite '+ str(motorPin) + ' 0\n', 'utf-8'))
-    ser.write(bytes('analogWrite '+ str(motorPin_other) + ' ' + str(0) + '\n', 'utf-8'))
+    ser.write(bytes('analogWrite '+ str(motorPin) + str(0) + '\n',  'utf-8'))
+    ser.write(bytes('analogWrite '+ str(motorPin_other) + str(0) + '\n',   'utf-8'))
 
     ser.write(b'digitalWrite 13 LOW\n')
+    bytesToRead = ser.inWaiting()
+    data=ser.read(bytesToRead)
+    print(data)
     ser.close()
 
 vibrate("left")
 time.sleep(2)
 vibrate("right")
-
-
-
-
-
-
+time.sleep(2)
+vibrate("right")
+time.sleep(2)
+vibrate("right")
 
 
 
