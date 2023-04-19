@@ -5,7 +5,7 @@ sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP")
 import warnings
 import os
 warnings.filterwarnings('ignore')
-import vibrate_visual_lib as vibrovisual
+import experiment_lib as experiment
 import utils.data_analysis.synch_data as synch
 
 # Parameters
@@ -21,7 +21,7 @@ file_name_synched = os.path.join(data_path, 'synched_data.csv')
 record_duration = 100
 
 
-vibrovisual.run_trial(duration = record_duration, file_name_raw = file_name_raw, file_name_marked = file_name_marked, file_name_synched = file_name_synched)
+experiment.run_trial(tyep = "vibro", duration = record_duration, file_name_raw = file_name_raw, file_name_marked = file_name_marked, file_name_synched = file_name_synched)
 
 
 
