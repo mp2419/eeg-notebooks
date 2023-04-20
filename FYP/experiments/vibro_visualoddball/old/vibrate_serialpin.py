@@ -27,7 +27,7 @@ def vibrate(direction):
     ser.close()
 
 # - Test -
-# vibrate("left")
-# time.sleep(2)
-# vibrate("right")
+vibrate("left")
+time.sleep(2)
+vibrate("right")
 

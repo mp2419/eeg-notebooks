@@ -93,6 +93,8 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
         mywin.flip()
         current_colour = None
         blue_n = 0 
+        exit = False
+        key = None
 
         time.sleep(2)
         # Iterate through the events
@@ -134,7 +136,6 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
                     if label == 'blue':
                         blue_n += 1
 
-
             # --- Haptic/Auditory Stimulus - Directional Command
             elif next_event_type == 'direction':
 
@@ -150,18 +151,26 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
                 timestamp = time.time()
                 writer.writerow([timestamp, label])
 
+                #old
                 # Wait for key input
-                event.waitKeys(keyList=key)
+                #event.waitKeys(keyList=key)
 
-                # Push sample of audio stimulus
-                timestamp = time.time()
-                writer.writerow([timestamp, key])
+
+            keys = event.getKeys(keyList=None, modifiers=False, timeStamped=False)
+            for i in keys:
+                if i == key:
+                    # Push sample of audio stimulus
+                    timestamp = time.time()
+                    writer.writerow([timestamp, key]) #TODO check timing or use timeStamped tuple format
+                elif i == "escape":
+                    exit = True
+
 
             # offset
             core.wait(soa)
             #mywin.flip()
 
-            if  (time.time() - start_time) > duration:
+            if  (time.time() - start_time) > duration | exit:
                 print("Stopped writing data at time ", time.time())
                 break
 
@@ -238,9 +247,9 @@ def perform_stimulus(command, type):
         change_shape(command)
     elif type == "audio":
         if command =='right':
-            playsound.playsound("FYP\\audio_visualoddball\\audio_data\\right_only_beep.wav", True)
+            playsound.playsound("FYP\\experiments\\audio_visualoddball\\audio_data\\right_only_beep.wav", True)
         else:
-            playsound.playsound("FYP\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
+            playsound.playsound("FYP\\experiments\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
 
     return key
 

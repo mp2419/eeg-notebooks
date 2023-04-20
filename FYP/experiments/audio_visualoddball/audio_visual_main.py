@@ -1,11 +1,12 @@
 import sys
 sys.path.append("..\\")
 sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP")
-# print(sys.path)
-import warnings
+sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\experiments")
+#print(sys.path)
+import warnings  
 import os
 warnings.filterwarnings('ignore')
-import experiment_lib as experiment
+import experiment_lib as exp
 import utils.data_analysis.synch_data as synch
 
 # Parameters
@@ -21,7 +22,7 @@ file_name_synched = os.path.join(data_path, 'synched_data.csv')
 record_duration = 100
 
 
-experiment.run_trial(type= "audio", duration = record_duration, file_name_raw = file_name_raw, file_name_marked = file_name_marked, file_name_synched = file_name_synched)
+exp.run_trial(type= "audio", duration = record_duration, file_name_raw = file_name_raw, file_name_marked = file_name_marked, file_name_synched = file_name_synched)
 
 
 
