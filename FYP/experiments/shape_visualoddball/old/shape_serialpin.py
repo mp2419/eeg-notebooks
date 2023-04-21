@@ -28,7 +28,7 @@ def change_shape(direction):
     ser.close()
 
 # - Test -
-# change_shape("left")
-# time.sleep(2)
-# change_shape("right")
+change_shape("left")
+time.sleep(2)
+change_shape("right")
 
