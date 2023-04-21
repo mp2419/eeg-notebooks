@@ -61,9 +61,9 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
     # - Wait for both threads to finish
     recording_thread.join()
     # # stimulus_thread.join()
-    blue_n_reported = return_blue_number(mywin)
+    return_blue_number(mywin, blue_n, file_name_marked)
     print("Experiment Completed at time ", time.time())
-    print("Number of blue circles reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
+    
     
     mywin.close()
     synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
@@ -98,7 +98,7 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
 
         time.sleep(2)
         writer.writerow([time.time(), 'start'])
-        
+
         # Iterate through the events
         while True:
             # Inter trial interval
@@ -163,9 +163,12 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
                 for i in range(len(keys)):
                     current_key = keys[i]
                     #print(current_key)
+                    print(current_key[0])
                     if current_key[0] == 'left':
+                        print('arrow')
                         writer.writerow([time.time(), 'left arrow'])                
                     elif current_key[0] == 'right':
+                        print('arrow')
                         writer.writerow([time.time(), 'right arrow'])
                     elif current_key[0] == 'escape':
                         exit = True
@@ -312,7 +315,9 @@ def change_shape(direction):
         print(data, " Done")
     ser.close()
 
-def return_blue_number(mywin ):
+# --- visual
+
+def return_blue_number(mywin, blue_n, file_name_marked):
 
     # graphics
      # mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
@@ -324,9 +329,7 @@ def return_blue_number(mywin ):
         instruction_text = """
         Well Done! 
 
-        Please report the number of BLUE circles 
-        
-        you have counted and press SPACE.
+        Please report the number of BLUE circles you have counted and press SPACE.
 
         Number of blue circles: %s
         
@@ -341,16 +344,19 @@ def return_blue_number(mywin ):
 
         if 'space' in keys:  # check if the escape key was pressed
             break
-
         if keys[0].isdigit():  # check if the key pressed is a number
             key_number += keys[0]  # append the number to key_number
-
-
-    # mywin.close()
+        if keys[0] == 'backspace':  # check if the key pressed is delete
+            key_number = ''  # 
     
-    return key_number
+    file = file_name_marked[:-11] + 'blue_circles.csv'
 
-# --- visual
+    with open(file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['True', 'Reported'])
+        writer.writerow([blue_n, key_number])
+
+    print("Number of blue circles reported is: ", key_number, "Number of actual blue circles is: ", blue_n )
 
 def show_instructions(duration,  mywin ):
 
