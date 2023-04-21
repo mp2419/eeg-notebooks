@@ -28,6 +28,7 @@ def vibrate(direction):
 
 # - Test -
 vibrate("left")
-time.sleep(2)
+time.sleep(1)
 vibrate("right")
+
 

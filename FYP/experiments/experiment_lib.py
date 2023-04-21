@@ -155,7 +155,7 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
                 # Wait for key input
                 #event.waitKeys(keyList=key)
 
-
+            #TODO
             keys = event.getKeys(keyList=None, modifiers=False, timeStamped=False)
             for i in keys:
                 if i == key:
