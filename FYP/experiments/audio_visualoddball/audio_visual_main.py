@@ -19,7 +19,7 @@ data_path = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 
 file_name_raw = os.path.join(data_path, 'eeg.csv')
 file_name_marked = os.path.join(data_path, 'markers.csv')
 file_name_synched = os.path.join(data_path, 'synched_data.csv')
-record_duration = 100
+record_duration = 20
 
 
 experiment.run_trial(type= "audio", duration = record_duration, file_name_raw = file_name_raw, file_name_marked = file_name_marked, file_name_synched = file_name_synched)

@@ -36,7 +36,7 @@ def run_experiement(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\D
         # # stimulus_thread.join()
         blue_n_reported = return_blue_number(mywin)
         print("Experiment Completed at time ", time.time())
-        print("Number of blue cirlces reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
+        print("Number of blue circles reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
 
     mywin.close()
     synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
@@ -63,7 +63,7 @@ file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP
     # # stimulus_thread.join()
     blue_n_reported = return_blue_number(mywin)
     print("Experiment Completed at time ", time.time())
-    print("Number of blue cirlces reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
+    print("Number of blue circles reported is: ", blue_n_reported, "Number of actual blue circles is: ", blue_n )
     
     mywin.close()
     synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
@@ -97,6 +97,8 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
         key = None
 
         time.sleep(2)
+        writer.writerow([time.time(), 'start'])
+        
         # Iterate through the events
         while True:
             # Inter trial interval
@@ -155,22 +157,27 @@ def present_experiment(type, trial, duration, file_name,  mywin,  iti = 0.7, soa
                 # Wait for key input
                 #event.waitKeys(keyList=key)
 
-            #TODO
-            keys = event.getKeys(keyList=None, modifiers=False, timeStamped=False)
-            for i in keys:
-                if i == key:
-                    # Push sample of audio stimulus
-                    timestamp = time.time()
-                    writer.writerow([timestamp, key]) #TODO check timing or use timeStamped tuple format
-                elif i == "escape":
-                    exit = True
+            keys = event.getKeys(keyList=None, modifiers=False, timeStamped=True)
+            #print(keys)
+            if keys != []:
+                for i in range(len(keys)):
+                    current_key = keys[i]
+                    #print(current_key)
+                    if current_key[0] == 'left':
+                        writer.writerow([time.time(), 'left arrow'])                
+                    elif current_key[0] == 'right':
+                        writer.writerow([time.time(), 'right arrow'])
+                    elif current_key[0] == 'escape':
+                        exit = True
+                        print("exit")
 
 
             # offset
             core.wait(soa)
             #mywin.flip()
 
-            if  (time.time() - start_time) > duration | exit:
+            if ((time.time() - start_time) > duration) | (exit == True):
+                writer.writerow([time.time(), 'end'])
                 print("Stopped writing data at time ", time.time())
                 break
 
@@ -195,6 +202,7 @@ def record_data(duration, file_name):
     if len(streams) == 0:
         raise RuntimeError('Can\'t find EEG stream.')
 
+    #TODO if no eeg stop experiment
     # Set active EEG stream to inlet and apply time correction
     start_time = time.time()
     print("Start acquiring data at time ", start_time)
@@ -349,11 +357,10 @@ def show_instructions(duration,  mywin ):
     instruction_text = """
     Welcome to the Multisensory experiment! 
 
-    You will see displayed circles of different colours, please COUNT the BLUE circles.
+    1. You will see circles of different colours, please COUNT the BLUE circles.
 
-    Occasionally, you will feel a left or right directiona indication, please PRESS the LEFT or RIGHT arrow key accordingly.
+    2. You will perceive directional indications, please PRESS the LEFT or RIGHT arrow key accordingly.
      
- 
     Stay still, focus on the centre of the screen, and try not to blink. 
 
     This test will run for %s seconds.
