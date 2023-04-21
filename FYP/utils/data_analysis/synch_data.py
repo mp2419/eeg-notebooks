@@ -4,6 +4,7 @@
 
 import csv
 import numpy as np
+import trim_data 
 
 def merge_data(filename_raw, filename_marked, filename_union):
 
@@ -47,7 +48,7 @@ def merge_data(filename_raw, filename_marked, filename_union):
             # print(rows[0], i[0])
             if (float(rows[0]) < float(i[0])) & (done == False):
                 row_newfile = [i[0],i[1],i[2],i[3],i[4],rows[1], rows[0]] 
-                print('new event: ', idx1)
+                #print('new event: ', idx1)
                 if idx1 == len(reader2)-1:
                     print('All events recorderd')
                     done = True
@@ -58,7 +59,10 @@ def merge_data(filename_raw, filename_marked, filename_union):
                 row_newfile = [i[0],i[1],i[2],i[3],i[4],'n/a', '']
             
             writer.writerow(row_newfile)
-
+            
+    #TODO fix end does not get cut off the first time
+    trim_data.trim(filename_union)
+    trim_data.trim(filename_union)
     print(" -> New merged file at ", filename_union)
 
     # return filename_union
