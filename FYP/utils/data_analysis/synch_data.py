@@ -44,9 +44,10 @@ def merge_data(filename_raw, filename_marked, filename_union):
         done = False
         rows = reader2[idx1]
         for i in reader1:
+            # print(rows[0], i[0])
             if (float(rows[0]) < float(i[0])) & (done == False):
                 row_newfile = [i[0],i[1],i[2],i[3],i[4],rows[1], rows[0]] 
-                # print('new event: ', idx1)
+                print('new event: ', idx1)
                 if idx1 == len(reader2)-1:
                     print('All events recorderd')
                     done = True
@@ -62,9 +63,9 @@ def merge_data(filename_raw, filename_marked, filename_union):
 
     # return filename_union
 
-# new_file = merge_data(filename_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\2_recording.csv', 
-#             filename_marked =  'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\2_markers.csv',
-#             filename_union = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\2_syncdata.csv')
+new_file = merge_data(filename_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\eeg.csv', 
+            filename_marked =  'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\markers.csv',
+            filename_union = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\synched_data.csv')
 
 
 

@@ -302,9 +302,9 @@ def change_shape(direction):
         elif direction == "right":
             ser.write(b'2\n')
 
-        bytesToRead = ser.inWaiting()
-        data=ser.read(bytesToRead)
-        print(data, " Translation")
+        # bytesToRead = ser.inWaiting()
+        # data=ser.read(bytesToRead)
+        # print(data, " Translation")
 
     # - STOP -
     while time.time() - start_time < 4:
