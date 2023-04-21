@@ -11,8 +11,8 @@ __title__ = "MultiSensory"
 
 # ----------- run trial or experiement ----------
 
-def run_experiement(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
-    file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_synched.csv'):
+def run_experiement(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_raw.csv',
+    file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_synched.csv'):
     
     mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
     show_instructions(duration, mywin)
@@ -41,8 +41,8 @@ def run_experiement(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\D
     mywin.close()
     synch.merge_data(filename_raw = file_name_raw, filename_marked = file_name_marked, filename_union = file_name_synched)
 
-def run_trial(type, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_raw.csv',
-file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\data_muse_synched.csv'):
+def run_trial(type, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_raw.csv',
+file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_synched.csv'):
     
     mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
     show_instructions(duration, mywin)
@@ -271,7 +271,7 @@ def vibrate(direction):
     print("Vibrate ", direction)
 
     # - RUN -
-    while time.time() - start_time < 5:
+    while time.time() - start_time < 3:
         if direction == "left":
             ser.write(b'9\n')
         elif direction == "right":
@@ -282,7 +282,7 @@ def vibrate(direction):
         time.sleep(0.5)
 
     # - STOP -
-    while time.time() - (start_time) < 7:
+    while time.time() - (start_time) < 5:
         ser.write(b'1\n')
         # bytesToRead = ser.inWaiting()
         # ser.read(bytesToRead)
