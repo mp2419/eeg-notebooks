@@ -25,3 +25,6 @@ htmlcov
 
 # csv
 FYP/data/*
+FYP/data/AudioVisual/1/1/eeg.csv
+FYP/data/AudioVisual/1/1/markers.csv
+FYP/data/AudioVisual/1/1/synched_data.csv
