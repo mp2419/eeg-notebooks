@@ -16,7 +16,7 @@ def change_shape(direction):
 
         bytesToRead = ser.inWaiting()
         data=ser.read(bytesToRead)
-        print(data, " Translation")
+        #print(data, " Translation")
 
     # - STOP -
     while time.time() - start_time < 4:
@@ -24,10 +24,10 @@ def change_shape(direction):
 
         bytesToRead = ser.inWaiting()
         ser.read(bytesToRead)
-        print(data, " Done")
+        #print(data, " Done")
     ser.close()
 
-# - Test -
+# - Test -python 
 change_shape("left")
 time.sleep(2)
 change_shape("right")

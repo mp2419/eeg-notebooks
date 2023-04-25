@@ -4,7 +4,10 @@
 
 import csv
 import numpy as np
-import trim_data 
+import sys
+sys.path.append("..\\")
+sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP")
+import utils.data_analysis.trim_data as trim
 
 def merge_data(filename_raw, filename_marked, filename_union):
 
@@ -61,8 +64,8 @@ def merge_data(filename_raw, filename_marked, filename_union):
             writer.writerow(row_newfile)
             
     #TODO fix end does not get cut off the first time
-    trim_data.trim(filename_union)
-    trim_data.trim(filename_union)
+    trim.trim(filename_union)
+    trim.trim(filename_union)
     print(" -> New merged file at ", filename_union)
 
     # return filename_union

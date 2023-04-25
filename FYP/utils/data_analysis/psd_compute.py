@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the CSV file into a pandas DataFrame
-df = pd.read_csv('input.csv')
+df = pd.read_csv('C:\Users\matil/Desktop\FYP\code_env\eeg-notebooks\FYP\data\VibroVisual\1\1\synched_data.csv')
 
 # Extract the time values (first column) and data (other columns)
 time = df.iloc[:, 0].values

@@ -6,6 +6,7 @@ from pylsl import StreamInlet, resolve_byprop
 from psychopy import visual, core, event
 from psychopy.visual.circle import Circle
 import utils.data_analysis.synch_data as synch
+import utils.data_analysis.trim_data as trim
 
 __title__ = "MultiSensory"
 
@@ -271,7 +272,7 @@ def vibrate(direction):
     print("Vibrate ", direction)
 
     # - RUN -
-    while time.time() - start_time < 3:
+    while time.time() - start_time < 2:
         if direction == "left":
             ser.write(b'9\n')
         elif direction == "right":
@@ -282,7 +283,7 @@ def vibrate(direction):
         time.sleep(0.5)
 
     # - STOP -
-    while time.time() - (start_time) < 5:
+    while time.time() - (start_time) < 3:
         ser.write(b'1\n')
         # bytesToRead = ser.inWaiting()
         # ser.read(bytesToRead)
@@ -312,7 +313,7 @@ def change_shape(direction):
 
         bytesToRead = ser.inWaiting()
         ser.read(bytesToRead)
-        print(data, " Done")
+        #print(data, " Done")
     ser.close()
 
 # --- visual
