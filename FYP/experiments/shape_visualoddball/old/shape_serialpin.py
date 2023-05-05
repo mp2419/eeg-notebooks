@@ -8,27 +8,29 @@ def change_shape(direction):
     print("Move ", direction)
 
     start_time = time.time()
-    while time.time() - start_time < 2:
+    while time.time() - start_time < 1:
         if direction == "left":
-            ser.write(b'1\n')
+            ser.write(b'1 Left\n')
         elif direction == "right":
-            ser.write(b'2\n')
+            ser.write(b'2 Right\n')
 
-        bytesToRead = ser.inWaiting()
-        data=ser.read(bytesToRead)
-        #print(data, " Translation")
-
+    time.sleep(1) 
+    bytesToRead = ser.inWaiting()
+    data=ser.read(bytesToRead)
+    print(data)
+    ser.write(b'0\n')
+    time.sleep(1) 
+    
     # - STOP -
-    while time.time() - start_time < 4:
-        ser.write(b'0\n')
-
-        bytesToRead = ser.inWaiting()
-        ser.read(bytesToRead)
-        #print(data, " Done")
+    bytesToRead = ser.inWaiting()
+    ser.read(bytesToRead)
+    print(data)
+    print("Done")
     ser.close()
 
 # - Test -python 
-change_shape("left")
-time.sleep(2)
-change_shape("right")
+while(True):
+    change_shape("right")
+    time.sleep(2)
+    change_shape("left")
 

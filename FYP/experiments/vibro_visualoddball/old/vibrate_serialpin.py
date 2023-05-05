@@ -30,5 +30,14 @@ def vibrate(direction):
 vibrate("left")
 time.sleep(1)
 vibrate("right")
+time.sleep(1)
+vibrate("left")
+time.sleep(1)
+vibrate("right")
+time.sleep(1)
+vibrate("left")
+time.sleep(1)
+vibrate("right")
+
 
 
