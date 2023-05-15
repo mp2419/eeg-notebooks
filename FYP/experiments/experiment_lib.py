@@ -1,3 +1,8 @@
+import sys
+sys.path.append("..\\")
+sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP")
+sys.path.append("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\experiments")
+#print(sys.path)
 import time, serial, random, playsound
 import numpy as np
 import csv, os
@@ -12,7 +17,7 @@ __title__ = "MultiSensory"
 
 # ----------- run trial or experiement ----------
 
-def run_experiement(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_raw.csv',
+def run_experiment(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_raw.csv',
     file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_synched.csv'):
     
     mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
@@ -204,7 +209,7 @@ def record_data(duration, file_name):
     print('Looking for an EEG stream...')
     streams = resolve_byprop('type', 'EEG', timeout=2)
     if len(streams) == 0:
-        raise RuntimeError('Can\'t find EEG stream.')
+        raise RuntimeError('!!!! Can\'t find EEG stream. !!!!')
 
     #TODO if no eeg stop experiment
     # Set active EEG stream to inlet and apply time correction
@@ -233,7 +238,7 @@ def record_data(duration, file_name):
         writer = csv.writer(file)
         # Insert a header row
         #TODO change names of channels
-        writer.writerow(['Timestamp', 'Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Other'])
+        writer.writerow(['Timestamp', 'TP9', 'AF7', 'AF8', 'TP10', 'Other'])
         # Record data and put it into the queue
         while True:
             sample, timestamp = inlet.pull_sample()
@@ -259,9 +264,9 @@ def perform_stimulus(command, type):
         change_shape(command)
     elif type == "audio":
         if command =='right':
-            playsound.playsound("FYP\\experiments\\audio_visualoddball\\audio_data\\right_only_beep.wav", True)
+            playsound.playsound("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\experiments\\audio_visualoddball\\audio_data\\right_only_beep.wav", True)
         else:
-            playsound.playsound("FYP\\experiments\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
+            playsound.playsound("C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\experiments\\audio_visualoddball\\audio_data\\left_only_beep.wav", True)
 
     return key
 

@@ -75,4 +75,4 @@ def check_quality(duration = 10):
     # AT REST: EEG quality (signal-to-noise ratio): [0.149849   0.1306871  0.13169118 0.11753881 0.96839295]; EEG quality (signal-to-noise ratio): [0.15654753 0.34208071 0.2231241  0.16698169 1.16249644]
     # noise: EEG quality (signal-to-noise ratio): [0.19566665 0.46358032 0.56061054 0.22219707 1.04238929]
     
-check_quality()
+# check_quality()
