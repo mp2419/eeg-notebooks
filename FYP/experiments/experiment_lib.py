@@ -50,7 +50,7 @@ def run_experiment(type, trials, duration, file_name_raw = 'C:\\Users\\matil\\De
 def run_trial(type, duration, file_name_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_raw.csv',
 file_name_marked = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_marked.csv', file_name_synched ='C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\test\\data_muse_synched.csv'):
     
-    mywin = visual.Window([1600, 900], monitor="testMonitor", units="deg", fullscr=True)
+    mywin = visual.Window([1600, 900], monitor="Generic PnP Monitor", units="deg", fullscr=True, screen=1)
     show_instructions(duration, mywin)
     
     print("Experiment Started at time ", time.time())
