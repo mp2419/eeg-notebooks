@@ -70,9 +70,9 @@ def merge_data(filename_raw, filename_marked, filename_union):
 
     # return filename_union
 
-new_file = merge_data(filename_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\eeg.csv', 
-            filename_marked =  'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\markers.csv',
-            filename_union = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\AudioVisual\\1\\3\\synched_data.csv')
+new_file = merge_data(filename_raw = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\ShapeVisual\\07\\1\\eeg.csv', 
+            filename_marked =  'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\ShapeVisual\\07\\1\\markers.csv',
+            filename_union = 'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\data\\ShapeVisual\\07\\1\\synched_data.csv')
 
 
 

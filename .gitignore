@@ -24,6 +24,8 @@ htmlcov
 .idea/
 
 # csv
+FYP/data_backup/*
+FYP/data_ordered/*
 FYP/data/*
 FYP/data/AudioVisual/1/1/eeg.csv
 FYP/data/AudioVisual/1/1/markers.csv
