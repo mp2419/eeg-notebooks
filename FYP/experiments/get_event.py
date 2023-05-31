@@ -11,7 +11,7 @@ def extract_marker_data(json_file, erp_file):
     print(eeg_data.shape)
 
     extracted_data = {}
-    marker_list = ["blue", "red", "right", "left", "right arow", "left arrow"]
+    marker_list = ["blue", "red", "right", "left", "right arrow", "left arrow"]
     window = int(0.6*256) #window samples of 600ms @ 256Hz 
     for marker in marker_list:
         event_timestamp_list = []
