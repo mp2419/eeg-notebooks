@@ -17,7 +17,7 @@ ica = ICA(n_components=n_components, random_state=0)  # Adjust the number of com
 ica.fit(filtered_raw)
 
 # Step 4: Identify eyeblink-related components
-eog_inds, eog_scores = ica.find_bads_eog(raw, ch_name='TP9')
+eog_inds, eog_scores = ica.find_bads_eog(filtered_raw, ch_name='TP9')
 
 # Step 5: Plot and inspect the identified eyeblink components
 picks=np.array(eog_inds).tolist()
@@ -34,10 +34,10 @@ ica.apply(cleaned_raw)
 #     Zeroing out 1 ICA component
 #     Projecting back using 4 PCA components
 
-# ica.plot_overlay(raw, exclude=[0], picks="eeg")
-# ica.plot_overlay(raw, exclude=[1], picks="eeg")
-# ica.plot_overlay(raw, exclude=[2], picks="eeg")
-# ica.plot_overlay(raw, exclude=[3], picks="eeg")
+ica.plot_overlay(filtered_raw, exclude=[0], picks="eeg")
+ica.plot_overlay(filtered_raw, exclude=[1], picks="eeg")
+ica.plot_overlay(filtered_raw, exclude=[2], picks="eeg")
+ica.plot_overlay(filtered_raw, exclude=[3], picks="eeg")
 
 #------- Plot the raw and cleaned data in time
 
@@ -51,6 +51,5 @@ ica.apply(cleaned_raw)
 
 #----------diagnostic of each IC
 
-# ica.plot_properties(raw, picks=[0, 1])
-# ica.plot_properties(raw, picks=[1, 2])
-# ica.plot_properties(raw, picks=[2, 3])
+ica.plot_properties(filtered_raw, picks=[0, 1, 2, 3])
+
