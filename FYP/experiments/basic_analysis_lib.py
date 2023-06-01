@@ -37,20 +37,11 @@ from mne.filter import create_filter
 from matplotlib import pyplot as plt
 from scipy.signal import lfilter, lfilter_zi
 
-from eegnb import _get_recording_dir
 from eegnb.devices.eeg import EEG
 from eegnb.devices.utils import EEG_INDICES, SAMPLE_FREQS
 import os
-from collections import OrderedDict
 import warnings
 warnings.filterwarnings('ignore')
-
-# MNE functions
-from mne import Epochs,find_events
-
-# EEG-Notebooks functions
-from eegnb.analysis.utils import load_data,plot_conditions
-from eegnb.datasets import fetch_dataset
 
 
 def load_csv_as_raw(
@@ -188,8 +179,7 @@ def check_quality(duration = 10):
     # EEG quality (signal-to-noise ratio): [ 0.34595192  0.38935046  0.42858711  0.6477837  38.99336141]
     # AT REST: EEG quality (signal-to-noise ratio): [0.149849   0.1306871  0.13169118 0.11753881 0.96839295]; EEG quality (signal-to-noise ratio): [0.15654753 0.34208071 0.2231241  0.16698169 1.16249644]
     # noise: EEG quality (signal-to-noise ratio): [0.19566665 0.46358032 0.56061054 0.22219707 1.04238929]
-    
-# check_quality()
+
 
 def plot_eeg_spectrum(file_name_raw):
     raw = load_csv_as_raw([file_name_raw ],256, [1,2,3, 4])

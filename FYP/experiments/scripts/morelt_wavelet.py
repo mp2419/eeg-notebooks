@@ -3,9 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mne
 from mne.time_frequency import tfr_morlet
-import json_to_mne
+from eeg_analysis_lib import json_to_mne
 
-# Load the raw data from JSON using json_to_mne module
 json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
 raw = json_to_mne.create_raw_object(json_file_path)
 

@@ -3,21 +3,7 @@ import csv
 import json
 from datetime import datetime, timedelta
 
-# Folder containing CSV files
-csv_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered')
-
-# Create a nested folder called "epochs"
-epochs_folder = os.path.join(csv_folder, "epochs")
-os.makedirs(epochs_folder, exist_ok=True)
-
-# Get a list of CSV files in the folder
-csv_files = [file for file in os.listdir(csv_folder) if file.endswith(".csv")]
-
-# Process each CSV file into json in the format of a dictionary of epochs
-for csv_file in csv_files:
-    file_path = os.path.join(csv_folder, csv_file)
-    new_file_path = os.path.join(epochs_folder, csv_file.replace(".csv", ".json"))
-
+def extract_epoch(file_path, new_file_path):
     with open(file_path, "r") as file:
         csv_reader = csv.reader(file)
 
@@ -86,4 +72,15 @@ for csv_file in csv_files:
 
     print(f"Epochs file '{new_file_path}' created successfully.")
 
-print("Epochs files created successfully in the 'epochs' folder.")
+#--------------
+
+# csv_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered')
+# epochs_folder = os.path.join(csv_folder, "epochs")
+# os.makedirs(epochs_folder, exist_ok=True)
+# csv_files = [file for file in os.listdir(csv_folder) if file.endswith(".csv")]
+
+# for csv_file in csv_files:
+#     file_path = os.path.join(csv_folder, csv_file)
+#     new_file_path = os.path.join(epochs_folder, csv_file.replace(".csv", ".json"))
+#     extract_epoch(csv_file, new_file_path)
+# print("Epochs files created successfully in the 'epochs' folder.")

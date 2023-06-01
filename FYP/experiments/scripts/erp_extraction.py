@@ -1,5 +1,5 @@
 import mne, os
-import json_to_mne
+from eeg_analysis_lib import json_to_mne
 import numpy as np
 
 

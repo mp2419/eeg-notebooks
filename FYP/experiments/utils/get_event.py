@@ -32,7 +32,7 @@ def extract_marker_data(json_file, erp_file):
         erp_data_converted = [erp.tolist() for erp in erp_data]
         data_converted[marker] = erp_data_converted
 
-    with open(erp_file_path, 'w') as file:
+    with open(erp_file, 'w') as file:
         json.dump(data_converted, file)
 
     return extracted_data
@@ -59,8 +59,8 @@ def plot_erps(extracted_data):
 
 #--------
 
-json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
-erp_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'erp','AudioVisual_01_1.json')
+# json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
+# erp_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'erp','AudioVisual_01_1.json')
 
-data = extract_marker_data(json_file_path, erp_file_path)
-plot_erps(data)
+# data = extract_marker_data(json_file_path, erp_file_path)
+# plot_erps(data)

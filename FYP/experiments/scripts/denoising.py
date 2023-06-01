@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import mne, os
 from mne.preprocessing import ICA
-import json_to_mne
+from eeg_analysis_lib import json_to_mne
 
 json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
 
