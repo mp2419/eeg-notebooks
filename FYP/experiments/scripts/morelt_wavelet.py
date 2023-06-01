@@ -5,7 +5,7 @@ import mne
 from mne.time_frequency import tfr_morlet
 from eeg_analysis_lib import json_to_mne
 
-json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
+json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
 raw = json_to_mne.create_raw_object(json_file_path)
 
 filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')

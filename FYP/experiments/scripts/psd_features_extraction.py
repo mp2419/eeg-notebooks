@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import json_to_mne
 
 
-json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
+json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
 
 raw = json_to_mne.create_raw_object(json_file_path)
 # Define the frequency bands of interest

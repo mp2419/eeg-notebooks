@@ -278,10 +278,14 @@ def extract_outliers(json_file_path, threshold = 70, percentage = 30):
 
     # Calculate the percentage of epochs containing more than 30% outliers
     ch = ["TP9", "AF7", "AF8", "TP10"]
+    percentages = []
     print("Percentage of epochs containing more than", percentage, "% outliers (above", threshold, "microV)")
     for channel in range(0,4):
         channel_outlier_percentage[channel] = (outlier_epochs[channel] / epoch_length) * 100
         print(ch[channel], f": {channel_outlier_percentage[channel]:.2f}%")
+        percentages.append((outlier_epochs[channel] / epoch_length) * 100)
+        
+    return percentages
 
 # Auxiliary function to calculate the percentage of outliers in the filtered epoch data
 def calculate_outlier_percentage(epoch, threshold = 70):
