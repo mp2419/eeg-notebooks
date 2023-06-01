@@ -1,12 +1,16 @@
 {
     "AudioVisual_04_2": {
+        "Cir_Error_pcg": 8.75,
+        "Cir_Error": 7.0,
+        "Dir_Missed_pcg": 35.13513513513514,
+        "Dir_Wrong_pcg": 0.0,
+        "Dir_empty_call": 1,
         "L_correct": 36,
         "L_missed": 13,
         "L_wrong": 0,
         "R_correct": 38,
         "R_missed": 13,
         "R_wrong": 0,
-        "empty_call": 1,
         "L_delay_avg": 0.005329853958553738,
         "R_delay_avg": 0.027388986788297955,
         "L_delay_std": 0.00424399781265571,
@@ -88,8 +92,6 @@
             0.00390625,
             0.00390625,
             0.00390625
-        ],
-        "circle_error": 7.0,
-        "circle_error_pcg": 8.75
+        ]
     }
 }
