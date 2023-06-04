@@ -453,10 +453,10 @@ def extract_direction_evoked(raw, plot_display=False, tmin=-0.3, tmax=0.7):
 
         mne.viz.plot_compare_evokeds(evokeds, combine="mean")
 
-    return evokeds 
+    return epochs["left"], epochs["right"]
 
 #----------------
 
 # json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_1.json')
 # raw = create_raw_object(json_file_path)
-# evoked = extract_direction_evoked(raw, plot_display=False)
+# epochs["left"], epochs["right"] = extract_direction_evoked(raw, plot_display=False)
