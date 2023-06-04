@@ -1,12 +1,12 @@
 import mne, os
 from mne.preprocessing import ICA
 import matplotlib.pyplot as plt
-from eeg_analysis_lib import json_to_mne
+from eeg_analysis_lib import create_raw_object
 import numpy as np
 
 json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
 
-raw = json_to_mne.create_raw_object(json_file_path)
+raw = create_raw_object(json_file_path)
 
 # Step 2: Bandpass filter the EEG data (if not already done)
 filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')

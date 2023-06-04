@@ -251,7 +251,7 @@ def extract_arrow_stats(json_file_path):
 
         stats['L_correct'] = len(left_arrow_delay)
         stats['R_correct'] = len(right_arrow_delay)
-        tot_correct = stats['L_correct'] + stats['R_correct']
+        tot = stats['L_correct'] + stats['R_correct'] + stats['L_missed']+ stats['R_missed'] + stats['L_wrong'] + stats['R_wrong']
 
         stats['L_delay_avg'] = np.mean(left_arrow_delay)
         stats['R_delay_avg'] = np.mean(right_arrow_delay)
@@ -259,8 +259,8 @@ def extract_arrow_stats(json_file_path):
         stats['L_delay_std'] = np.std(left_arrow_delay)
         stats['R_delay_std'] = np.std(right_arrow_delay)
 
-        stats['Dir_Missed_pcg'] = (stats['L_missed'] + stats['R_missed']) / tot_correct *100
-        stats['Dir_Wrong_pcg'] = (stats['L_wrong'] + stats['R_wrong']) / tot_correct *100
+        stats['Dir_Missed_pcg'] = (stats['L_missed'] + stats['R_missed']) / tot *100
+        stats['Dir_Wrong_pcg'] = (stats['L_wrong'] + stats['R_wrong']) / tot *100
 
     return left_arrow_delay, right_arrow_delay, stats
 

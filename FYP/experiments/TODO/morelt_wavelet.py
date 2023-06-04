@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mne
 from mne.time_frequency import tfr_morlet
-from eeg_analysis_lib import json_to_mne
+from eeg_analysis_lib import create_raw_object
 
 json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
-raw = json_to_mne.create_raw_object(json_file_path)
+raw = create_raw_object(json_file_path)
 
 filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')
 marker_mapping = {"blue": 1, "red": 2, "right": 3, "left": 4, "right arrow": 5, "left arrow": 6}
@@ -25,5 +25,6 @@ n_cycles = freqs / 2.0  # Number of cycles in each frequency range
 power = tfr_morlet(epochs, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
 
 # Plot the wavelet power
-power.plot(title=channel_names)
-plt.show()
+for i in len(power):
+    power[i].plot(title=channel_names[i])
+    plt.show(block= False)

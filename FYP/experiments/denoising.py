@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import mne, os
 from mne.preprocessing import ICA
-from eeg_analysis_lib import json_to_mne
+from eeg_analysis_lib import create_raw_object
 
 json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
 
-raw = json_to_mne.create_raw_object(json_file_path)
+raw = create_raw_object(json_file_path)
 # count = json_to_mne.return_eventcount(raw_data)
 
 filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')
@@ -33,7 +33,7 @@ plt.title('Filtered PSD')
 plt.show(block=False)
 
 # Plot ICA fit
-ica.plot_components(picks=range(n_components))
+ica.plot_components()#picks=range(n_components))
 plt.title('ICA Fit')
 plt.show(block=False)
 
