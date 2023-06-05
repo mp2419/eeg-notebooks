@@ -49,3 +49,30 @@ def calculate_outlier_percentage(epoch, threshold = 70):
     return outlier_percentage
 
 extract_outliers(json_file_path)
+
+#-------------------all files
+
+import eeg_analysis_lib as analysis
+import json, os
+import numpy as np
+
+csv_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered')
+json_folder = os.path.join(csv_folder, "epochs")
+json_files = [file for file in os.listdir(json_folder) if file.endswith(".json")]
+# json_files = [ os.path.join(json_folder,  'AudioVisual_01_1.json')]
+outliers_matrix = {}
+
+for file in json_files:
+    json_file = os.path.join(json_folder, file)
+    print("Computing outlier percentage for experiement: ", file)
+    percentages = analysis.extract_outliers(json_file, threshold = 70, percentage = 30)
+    outliers_matrix[file] = percentages
+
+json_data = json.dumps(outliers_matrix, indent=4)
+
+results_folder = os.path.join(csv_folder, "results_data")
+os.makedirs(results_folder, exist_ok=True)
+
+json_file = os.path.join(results_folder, "Outliers_7030.json")
+with open(json_file, 'w') as file:
+    file.write(json_data)
