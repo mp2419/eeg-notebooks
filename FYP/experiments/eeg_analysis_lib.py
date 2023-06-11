@@ -467,9 +467,12 @@ import mne, os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def erp_alltrials(mode= "Audio", rejection_th =7000000):
+def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=True):
+
+    #----------PROCESSING DATA
+
     raw_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered', 'mne_raw')
-    raw_files = [file for file in os.listdir(raw_folder) if file.endswith(".fif")]
+    #raw_files = [file for file in os.listdir(raw_folder) if file.endswith(".fif")]
     marker_mapping = {"blue": 1, "red": 2, "right": 3, "left": 4, "right arrow": 5, "left arrow": 6}
     duration = 30.0  # Duration of each epoch (seconds)
     event_ids = {'left': 4, 'right': 3}  # Replace with your event IDs
@@ -505,6 +508,8 @@ def erp_alltrials(mode= "Audio", rejection_th =7000000):
     combined_evoked_left = mne.combine_evoked(list(evokeds_left.values()), weights='nave')
     combined_evoked_right = mne.combine_evoked(list(evokeds_right.values()), weights='nave')
 
+    #-----------PLOTS------------
+
     # # Plot the average evoked responses for left events
     # fig, ax = plt.subplots()
     # for evoked in evokeds_left.values():
@@ -514,89 +519,60 @@ def erp_alltrials(mode= "Audio", rejection_th =7000000):
     # ax.legend(loc='upper right')
     # plt.show()
 
+    
     # Plot the average evoked response, individual trials, and standard deviation for each channel for left events
-    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+    fig, axs = plt.subplots(2, 2, figsize=(10, 6))
     fig.suptitle(f'ERP for {mode} Modality - Left Event')
     for ch_idx, ch_name in enumerate(evoked_left.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
 
-        axs[row_idx, col_idx].plot(evoked_left.times, evoked_left.data[ch_idx], color='black', linewidth=2, label='Mean')
+        if show_trials:
+            for raw_file, evoked in evokeds_left.items():
+                if raw_file == list(evokeds_left.keys())[0]:
+                    axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='red', alpha=0.5, label=f"Trial")
+                else:
+                    axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx],color='red', alpha=0.5)
+        
+        axs[row_idx, col_idx].plot(evoked_left.times, np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0), color='black', linewidth=2, label='Mean')
         axs[row_idx, col_idx].set_title(ch_name)
         axs[row_idx, col_idx].fill_between(evoked_left.times,
-                                        evoked_left.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        evoked_left.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        color='blue', alpha=0.3)
-
-        for raw_file, evoked in evokeds_left.items():
-            if raw_file == list(evokeds_left.keys())[0]:
-                axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='blue', alpha=0.5, label='Trials')
-            else:
-                axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='blue', alpha=0.5)
-
+                                        np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0) - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
+                                        np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0) + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
+                                        color='orange', alpha=0.3, label='Std')
         axs[row_idx, col_idx].legend(loc='upper right')
-
+        axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
+        axs[row_idx, col_idx].set_xlabel("Time (s)")
+        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)")
+    plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
 
     # Plot the average evoked response, individual trials, and standard deviation for each channel for right events
-    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+    fig, axs = plt.subplots(2, 2, figsize=(10, 6))
     fig.suptitle(f'ERP for {mode} Modality - Right Event')
     for ch_idx, ch_name in enumerate(evoked_right.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
 
-        axs[row_idx, col_idx].plot(evoked_right.times, evoked_right.data[ch_idx], color='black', linewidth=2, label='Mean')
+        if show_trials:
+            for raw_file, evoked in evokeds_right.items():
+                if raw_file == list(evokeds_right.keys())[0]:
+                    axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='blue', alpha=0.5, label=f"Trial")
+                else:
+                    axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx],color='blue', alpha=0.5)
+
+        axs[row_idx, col_idx].plot(evoked_right.times, np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0), color='black', linewidth=2, label='Mean')
         axs[row_idx, col_idx].set_title(ch_name)
         axs[row_idx, col_idx].fill_between(evoked_right.times,
-                                        evoked_right.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
-                                        evoked_right.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
-                                        color='red', alpha=0.3)
-
-        for raw_file, evoked in evokeds_right.items():
-            if raw_file == list(evokeds_right.keys())[0]:
-                axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='red', alpha=0.5, label='Trials')
-            else:
-                axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx], color='red', alpha=0.5)
-
+                                        np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0) - np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
+                                        np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0) + np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
+                                        color='green', alpha=0.3, label='Std')
         axs[row_idx, col_idx].legend(loc='upper right')
-
-    plt.tight_layout()
-    plt.show()
-
-        # Plot the average evoked response and standard deviation for each channel for left events
-    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-    fig.suptitle(f'ERP for {mode} Modality - Left Event')
-    for ch_idx, ch_name in enumerate(evoked_left.ch_names):
-        row_idx = ch_idx // 2
-        col_idx = ch_idx % 2
-
-        axs[row_idx, col_idx].plot(evoked_left.times, evoked_left.data[ch_idx], color='black', linewidth=2, label='Mean')
-        axs[row_idx, col_idx].fill_between(evoked_left.times,
-                                        evoked_left.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        evoked_left.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        color='blue', alpha=0.3)
-
-        axs[row_idx, col_idx].set_title(ch_name)
-
-    plt.tight_layout()
-    plt.show()
-
-    # Plot the average evoked response and standard deviation for each channel for right events
-    fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-    fig.suptitle(f'ERP for {mode} Modality - Right Event')
-    for ch_idx, ch_name in enumerate(evoked_right.ch_names):
-        row_idx = ch_idx // 2
-        col_idx = ch_idx % 2
-
-        axs[row_idx, col_idx].plot(evoked_right.times, evoked_right.data[ch_idx], color='black', linewidth=2, label='Mean')
-        axs[row_idx, col_idx].fill_between(evoked_right.times,
-                                        evoked_right.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
-                                        evoked_right.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
-                                        color='red', alpha=0.3)
-
-        axs[row_idx, col_idx].set_title(ch_name)
-
+        axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
+        axs[row_idx, col_idx].set_xlabel("Time (s)")
+        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)")
+    plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
 
