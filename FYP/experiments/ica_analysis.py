@@ -1,10 +1,12 @@
 import mne, os
 from mne.preprocessing import ICA
 import matplotlib.pyplot as plt
-from eeg_analysis_lib import create_raw_object
+from eeg_analysis_lib import create_raw_object, extract_direction_evoked
 import numpy as np
 
-json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_2.json')
+# TODO NO DIFFERENCE between CLEAN and RAW !!!
+
+json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_04_1.json')
 
 raw = create_raw_object(json_file_path)
 
@@ -41,15 +43,17 @@ ica.plot_overlay(filtered_raw, exclude=[3], picks="eeg")
 
 #------- Plot the raw and cleaned data in time
 
-raw.plot()
-plt.title('Raw Data')
-plt.show()
+# raw.plot()
+# plt.title('Raw Data')
+# plt.show()
 
-cleaned_raw.plot()
-plt.title('Cleaned Data')
-plt.show()
+# cleaned_raw.plot()
+# plt.title('Cleaned Data')
+# plt.show()
+epochs = {"left": [], "right": []}
+epochs["left"], epochs["right"] = extract_direction_evoked(cleaned_raw, plot_display=True)
 
 #----------diagnostic of each IC
 
-ica.plot_properties(filtered_raw, picks=[0, 1, 2, 3])
+#ica.plot_properties(filtered_raw, picks=[0, 1, 2, 3])
 
