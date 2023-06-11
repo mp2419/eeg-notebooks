@@ -30,7 +30,7 @@ eog_indices, eog_scores = ica.find_bads_eog(eog_epochs)
 
 # Exclude eyeblink-related components
 ica.exclude = eog_indices
-file_clean = os.path.join(raw_folder, "AudioVisual_04_1_raw.fif")
+file_clean = os.path.join(raw_folder, "AudioVisual_04_1_raw_clean.fif")
 # Apply inverse ICA transformation to obtain clean data
 raw_clean = ica.apply(raw.copy(), exclude=ica.exclude)
 

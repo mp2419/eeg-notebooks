@@ -21,7 +21,7 @@ eog_inds, eog_scores = ica.find_bads_eog(filtered_raw, ch_name='TP9')
 
 # Step 5: Plot and inspect the identified eyeblink components
 picks=np.array(eog_inds).tolist()
-ica.plot_components()
+# ica.plot_components()
 
 # Step 6: Remove eyeblink-related components from the data
 ica.exclude = eog_inds
@@ -41,13 +41,13 @@ ica.plot_overlay(filtered_raw, exclude=[3], picks="eeg")
 
 #------- Plot the raw and cleaned data in time
 
-# raw.plot()
-# plt.title('Raw Data')
-# plt.show()
+raw.plot()
+plt.title('Raw Data')
+plt.show()
 
-# cleaned_raw.plot()
-# plt.title('Cleaned Data')
-# plt.show()
+cleaned_raw.plot()
+plt.title('Cleaned Data')
+plt.show()
 
 #----------diagnostic of each IC
 

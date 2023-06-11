@@ -26,8 +26,8 @@ def extract_direction_evoked(raw, plot_display=False):
 
     l = epochs["left"].average()
     r = epochs["right"].average()
-    # fig1 = l.plot(titles="Left event")
-    # fig2 = r.plot(titles="Right event")
+    fig1 = l.plot(titles="Left event")
+    fig2 = r.plot(titles="Right event")
     
     # Mean and Std across epochs, both left and right
     evokeds = dict(
@@ -36,9 +36,9 @@ def extract_direction_evoked(raw, plot_display=False):
     )
 
     if plot_display:
-        #l.plot_topomap(times=[-0.2, 0.3, 0.5], average=0.05, title="Left event")
+        l.plot_topomap(times=[-0.2, 0.3, 0.5], average=0.05, title="Left event")
         l.plot_joint(title="Left event")
-        #r.plot_topomap(times=[-0.2, 0.3, 0.5], average=0.05, title="Right event")
+        r.plot_topomap(times=[-0.2, 0.3, 0.5], average=0.05, title="Right event")
         r.plot_joint(title="Right event")
 
 
