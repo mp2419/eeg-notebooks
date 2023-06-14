@@ -19,23 +19,23 @@ ica_sources = ica.get_sources(filtered_raw)
 
 # Reconstruct the data using the 10th most relevant ICA
 ica_reconstructed = ica_sources.copy()
-ica_reconstructed._data = ica_reconstructed._data[:2]  # Select the 10th ICA
+ica_reconstructed._data = ica_reconstructed._data[:5]  # Select the 10th ICA
 
 #--- Plot 
 # Plot raw PSD
-raw.plot_psd()
-plt.title('Raw PSD')
-plt.show(block=False)
+# raw.plot_psd()
+# plt.title('Raw PSD')
+# plt.show(block=False)
 
-# Plot filtered PSD
-filtered_raw.plot_psd()
-plt.title('Filtered PSD')
-plt.show(block=False)
+# # Plot filtered PSD
+# filtered_raw.plot_psd()
+# plt.title('Filtered PSD')
+# plt.show(block=False)
 
-# Plot ICA fit
-ica.plot_components()#picks=range(n_components))
-plt.title('ICA Fit')
-plt.show(block=False)
+# # Plot ICA fit
+# ica.plot_components()#picks=range(n_components))
+# plt.title('ICA Fit')
+# plt.show(block=False)
 
 # Plot reconstructed data
 ica_reconstructed.plot()

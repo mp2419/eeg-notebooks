@@ -467,7 +467,7 @@ import mne, os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=True):
+def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=True, arrow=False):
 
     #----------PROCESSING DATA
 
@@ -475,7 +475,10 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
     #raw_files = [file for file in os.listdir(raw_folder) if file.endswith(".fif")]
     marker_mapping = {"blue": 1, "red": 2, "right": 3, "left": 4, "right arrow": 5, "left arrow": 6}
     duration = 30.0  # Duration of each epoch (seconds)
-    event_ids = {'left': 4, 'right': 3}  # Replace with your event IDs
+    if arrow:
+        event_ids = {"right arrow": 5, "left arrow": 6} 
+    else:
+        event_ids = {'left': 4, 'right': 3}  
     tmin, tmax = -0.3, 0.7
     evokeds_left = {}
     evokeds_right = {}
@@ -486,19 +489,24 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
             raw_path = os.path.join(raw_folder, file)
             raw = mne.io.read_raw_fif(raw_path, preload=True)
             events, event_id= mne.events_from_annotations(raw, event_id=marker_mapping)
-            filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')
+            filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=30, fir_design='firwin')
             reject_threshold = rejection_th  # Threshold for epoch rejection (microvolts)
-
-            epochs_left = mne.Epochs(filtered_raw, events, event_id=event_ids['left'], tmin=tmin, tmax=tmax,
+            if arrow:
+                epochs_left = mne.Epochs(filtered_raw, events, event_id=event_ids['left arrow'], tmin=tmin, tmax=tmax,
                                 baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
 
+                epochs_right = mne.Epochs(filtered_raw, events, event_id=event_ids['right arrow'], tmin=tmin, tmax=tmax,
+                                    baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
+            else:
+                epochs_left = mne.Epochs(filtered_raw, events, event_id=event_ids['left'], tmin=tmin, tmax=tmax,
+                                    baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
+
+                epochs_right = mne.Epochs(filtered_raw, events, event_id=event_ids['right'], tmin=tmin, tmax=tmax,
+                                        baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
+            
             # Compute the average evoked response for left events
             evoked_left = epochs_left.average()
             evokeds_left[file] = evoked_left
-
-            # Create epochs based on the events and desired time window for right events
-            epochs_right = mne.Epochs(filtered_raw, events, event_id=event_ids['right'], tmin=tmin, tmax=tmax,
-                                    baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
 
             # Compute the average evoked response for right events
             evoked_right = epochs_right.average()
