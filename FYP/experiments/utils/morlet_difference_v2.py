@@ -72,9 +72,11 @@ def morlet_difference(raw_files, mode1="Audio", mode2="Vibro", rejection_th=7000
     freqs = np.arange(0.1, 30, 2)  # Frequency range for the wavelet transform
     n_cycles = freqs / 2.0  # Number of cycles in each frequency range
 
-    power_left = tfr_morlet(evoked_diff_left, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_left1 = tfr_morlet(combined_evoked_mode1_left, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_left2 = tfr_morlet(combined_evoked_mode2_left, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_left = power_left1 - power_left2
 
-    fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+    fig, axs = plt.subplots(2, 2, figsize=(5, 5))
 
     # Flatten the axs array for easier iteration
     axs = axs.flatten()
@@ -90,8 +92,8 @@ def morlet_difference(raw_files, mode1="Audio", mode2="Vibro", rejection_th=7000
 
         # Plot the power for the current channel with dB scaling
         tfr_plot = power_left.copy().pick_channels([channel])
-        tfr_data = np.mean((tfr_plot.data), axis=0)  # Compute average power
-        im = ax.imshow((tfr_data), aspect='auto', origin='lower', cmap='jet',
+        tfr_data = np.mean(np.abs(tfr_plot.data), axis=0)  # Compute average power
+        im = ax.imshow(10*np.log10(tfr_data), aspect='auto', origin='lower', cmap='jet',
                        extent=[tfr_plot.times[0], tfr_plot.times[-1], freq_min, freq_max])  # Create dummy image plot
 
         # Add colorbar
@@ -99,7 +101,7 @@ def morlet_difference(raw_files, mode1="Audio", mode2="Vibro", rejection_th=7000
         cbar.set_label('Power')
 
         # Set labels and title
-        ax.set_xlabel('Time (s)')
+        ax.set_xlabel('Time from the Event (s)')
         ax.set_ylabel('Frequency (Hz)')
         ax.set_title(f"{channel}")
 
@@ -115,12 +117,14 @@ def morlet_difference(raw_files, mode1="Audio", mode2="Vibro", rejection_th=7000
     fig.tight_layout()
 
     # Show the figure
-    plt.show()
+    plt.show(block=False)
 
     # Compute the Morlet transform of the difference for event_id 'right'
-    power_right = tfr_morlet(evoked_diff_right, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_right1 = tfr_morlet(combined_evoked_mode1_right, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_right2 = tfr_morlet(combined_evoked_mode2_right, freqs=freqs, n_cycles=n_cycles, use_fft=True, return_itc=False)
+    power_right = power_right1 - power_right2
 
-    fig, axs = plt.subplots(2, 2, figsize=(10, 8))
+    fig, axs = plt.subplots(2, 2, figsize=(5, 5))
 
     # Flatten the axs array for easier iteration
     axs = axs.flatten()
@@ -133,21 +137,26 @@ def morlet_difference(raw_files, mode1="Audio", mode2="Vibro", rejection_th=7000
     for i, channel in enumerate(power_right.ch_names):
         # Create a new subplot for the current channel
         ax = axs[i]
-
+        # Create the color map with the middle color at 0
+        # cmap = plt.cm.get_cmap('coolwarm')
+        # cmap.set_over('red')
+        # cmap.set_under('blue')
+        # cmap.set_bad('gray')
         # Plot the power for the current channel with dB scaling
         tfr_plot = power_right.copy().pick_channels([channel])
-        tfr_data = np.mean((tfr_plot.data), axis=0)  # Compute average power
-        im = ax.imshow(10 * np.log10(tfr_data), aspect='auto', origin='lower', cmap='jet',extent=[tfr_plot.times[0], tfr_plot.times[-1], freq_min, freq_max])  # Create dummy image plot
-        #im = ax.imshow((tfr_data), aspect='auto', origin='lower', cmap='jet', extent=[tfr_plot.times[0], tfr_plot.times[-1], freq_min, freq_max])  # Create dummy image plot
+        tfr_data = np.mean(np.abs(tfr_plot.data), axis=0)  # Compute average power
+        im = ax.imshow(10*np.log10(tfr_data), aspect='auto', origin='lower', cmap='jet',extent=[tfr_plot.times[0], tfr_plot.times[-1], freq_min, freq_max])  # Create dummy image plot
+        #im = ax.imshow((tfr_data), aspect='auto', origin='lower', cmap='jet',extent=[tfr_plot.times[0], tfr_plot.times[-1], freq_min, freq_max], )  # Create dummy image plot
 
+        #vmin=-max_abs_rms, vmax=max_abs_rms
         # Add colorbar
         cbar = plt.colorbar(im, orientation='vertical', pad=0.1, ax=ax)
-        cbar.set_label('Power (dB)')
-        #cbar.set_label('Power')
+       # cbar.set_label('Power (dB)')
+        cbar.set_label('Power')
 
 
         # Set labels and title
-        ax.set_xlabel('Time (s)')
+        ax.set_xlabel('Time from the Event (s)')
         ax.set_ylabel('Frequency (Hz)')
         ax.set_title(f"{channel}")
 
