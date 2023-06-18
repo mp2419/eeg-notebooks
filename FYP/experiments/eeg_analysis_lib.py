@@ -826,7 +826,6 @@ def compute_amplitude_rms(epochs, event_id, sfreq, pre_init=-0.2, pre_end=0, pos
 def erp_rsm_alltrials(raw_files, mode= "Audio", rejection_th =7000000):
 
     #----------PROCESSING DATA
-
     raw_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered', 'mne_raw')
     #raw_files = [file for file in os.listdir(raw_folder) if file.endswith(".fif")]
     marker_mapping = {"blue": 1, "red": 2, "right": 3, "left": 4, "right arrow": 5, "left arrow": 6}
@@ -853,6 +852,9 @@ def erp_rsm_alltrials(raw_files, mode= "Audio", rejection_th =7000000):
             mean_rms_trial['right'].append(mean_rms[:,1])  
             std_error_rms_trial['left'].append(std_error_rms[:,0])
             std_error_rms_trial['right'].append(std_error_rms[:,1])    
+            
+    mean_rms_trial['left'] = np.array(mean_rms_trial['left'])
+    mean_rms_trial['right'] = np.array(mean_rms_trial['right'])
     
     return mean_rms_trial, std_error_rms_trial
 
