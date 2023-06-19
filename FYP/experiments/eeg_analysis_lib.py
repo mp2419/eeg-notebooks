@@ -847,7 +847,7 @@ def erp_rsm_alltrials(raw_files, mode= "Audio", rejection_th =7000000):
             epochs = mne.Epochs(filtered_raw, events, event_id=event_ids, tmin=tmin, tmax=tmax,
                                 baseline=(None, 0), preload=True, reject=dict(eeg=reject_threshold))
 
-            mean_rms, std_error_rms = compute_amplitude_rms(epochs, event_ids, sfreq)
+            mean_rms, std_error_rms = compute_amplitude_rms(epochs, event_ids, sfreq,pre_init=-0.4, pre_end=-0.2, post_init=0.3, post_end=0.4)
             mean_rms_trial['left'].append(mean_rms[:,0])
             mean_rms_trial['right'].append(mean_rms[:,1])  
             std_error_rms_trial['left'].append(std_error_rms[:,0])
