@@ -1,0 +1,8 @@
+Abstract – Matilde Piccoli 01764158
+Comparative Research on the Changes in Cognitive Load following Auditory and Haptic Stimulation
+The field of haptic technology and the exploration of its influence on the user state has only begun to emerge. This study aimed to lay the basis for this research by comparatively analysing the effects of auditory and haptic stimulus processing on the user’s cognitive state and performance in a context requiring multi-tasking abilities.
+Our use case was to evaluate vibration and shape-changing-based haptics for navigation-assisting application, using a combination of physiological, task performance and subjective metrics. A passive Brain Computer Interface was used to record the participant’s brain activity (using Electroencephalography) whilst performing audiovisual and tactile-visual tasks. 
+The physiological results showed increased mental effort (lower β and γ power) for auditory compared to haptic stimulation. This was accompanied by lower engagement and stimulus receptiveness (greater δ power in the brain’s frontal region, higher perceived effort and frustration and lower performance). The shape-changing-based haptic stimulation also outperformed the vibrotactile modality regarding task workload and stimulus awareness (lower perceived task demand and the higher α power). Nevertheless, we also recorded a more intense power in the θ band and lower time domain response in the frontal region, associated with increased mental load. 
+Overall, this study provided encouraging results on applying haptic-based stimulation to navigation-assisting interfaces and user-focused devices in general. Due to the novelty of this study, additional investigation of these results is expected.
+
+

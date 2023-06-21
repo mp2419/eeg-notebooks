@@ -489,7 +489,7 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
             raw_path = os.path.join(raw_folder, file)
             raw = mne.io.read_raw_fif(raw_path, preload=True)
             events, event_id= mne.events_from_annotations(raw, event_id=marker_mapping)
-            filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=30, fir_design='firwin')
+            filtered_raw = raw.copy().filter(l_freq=0.1, h_freq=40, fir_design='firwin')
             reject_threshold = rejection_th  # Threshold for epoch rejection (microvolts)
             if arrow:
                 epochs_left = mne.Epochs(filtered_raw, events, event_id=event_ids['left arrow'], tmin=tmin, tmax=tmax,
@@ -530,7 +530,9 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
     
     # Plot the average evoked response, individual trials, and standard deviation for each channel for left events
     fig, axs = plt.subplots(2, 2, figsize=(10, 6))
-    fig.suptitle(f'ERP for {mode} Modality - Left Event')
+    fig.suptitle(f'ERP for {mode} Modality - Left Event', fontsize=18)
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.axvline(0, color='black',linestyle='--', linewidth=0.5)
     for ch_idx, ch_name in enumerate(evoked_left.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
@@ -543,22 +545,30 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
                     axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx],color='red', alpha=0.5)
         
         axs[row_idx, col_idx].plot(evoked_left.times, np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0), color='black', linewidth=2, label='Mean')
-        axs[row_idx, col_idx].set_title(ch_name)
+        axs[row_idx, col_idx].set_title(ch_name,  fontsize=14)
         axs[row_idx, col_idx].fill_between(evoked_left.times,
                                         np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0) - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
                                         np.mean([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0) + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
                                         color='orange', alpha=0.3, label='Std')
-        axs[row_idx, col_idx].legend(loc='upper right')
         axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
-        axs[row_idx, col_idx].set_xlabel("Time (s)")
-        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)")
-    plt.axvline(x=0, color='black', linestyle='--')
+        axs[row_idx, col_idx].axhline(y=0, color='black')
+        axs[row_idx, col_idx].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)",  fontsize=14)
+        axs[row_idx, col_idx].tick_params(axis='both', which='major', labelsize=12)
+    axs[row_idx, col_idx].legend(loc='lower right', fontsize=14)
+    # fig.xlabel("Time from Event (s)",  fontsize=16)
+    # fig.ylabel("Amplitude (uV)",  fontsize=14)
+    #fig.text(-0.5, 0.04, 'Time from Event (s)', ha='center', va='center', fontsize=14)
+    #fig.text(0.06, -0.5, 'Amplitude (uV)', ha='center', va='center', rotation='vertical', fontsize=14)
+    #plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
 
     # Plot the average evoked response, individual trials, and standard deviation for each channel for right events
     fig, axs = plt.subplots(2, 2, figsize=(10, 6))
-    fig.suptitle(f'ERP for {mode} Modality - Right Event')
+    fig.suptitle(f'ERP for {mode} Modality - Right Event',  fontsize=16)
+
+
     for ch_idx, ch_name in enumerate(evoked_right.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
@@ -571,16 +581,17 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
                     axs[row_idx, col_idx].plot(evoked.times, evoked.data[ch_idx],color='blue', alpha=0.5)
 
         axs[row_idx, col_idx].plot(evoked_right.times, np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0), color='black', linewidth=2, label='Mean')
-        axs[row_idx, col_idx].set_title(ch_name)
+        axs[row_idx, col_idx].set_title(ch_name,  fontsize=14)
         axs[row_idx, col_idx].fill_between(evoked_right.times,
                                         np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0) - np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
                                         np.mean([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0) + np.std([evoked.data[ch_idx] for evoked in evokeds_right.values()], axis=0),
                                         color='green', alpha=0.3, label='Std')
-        axs[row_idx, col_idx].legend(loc='upper right')
         axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
-        axs[row_idx, col_idx].set_xlabel("Time (s)")
-        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)")
-    plt.axvline(x=0, color='black', linestyle='--')
+        axs[row_idx, col_idx].axhline(y=0, color='black')
+        axs[row_idx, col_idx].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)",  fontsize=14)
+    axs[row_idx, col_idx].legend(loc='lower right',  fontsize=14)
+    #plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
 
