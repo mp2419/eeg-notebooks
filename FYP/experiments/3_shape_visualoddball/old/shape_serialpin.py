@@ -31,6 +31,6 @@ def change_shape(direction):
 # - Test -python 
 while(True):
     change_shape("right")
-    time.sleep(2)
+    time.sleep(1)
     change_shape("left")
 

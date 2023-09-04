@@ -29,7 +29,7 @@ def vibrate(direction):
 # - Test -
 while True:
     vibrate("left")
-    time.sleep(3)
+    time.sleep(1)
     vibrate("right")
     time.sleep(1)
 

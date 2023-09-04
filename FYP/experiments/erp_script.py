@@ -8,7 +8,7 @@ def erp_alltrials(mode= "Audio", rejection_th =7000000):
     marker_mapping = {"blue": 1, "red": 2, "right": 3, "left": 4, "right arrow": 5, "left arrow": 6}
     duration = 30.0  # Duration of each epoch (seconds)
     event_ids = {'left': 4, 'right': 3}  # Replace with your event IDs
-    tmin, tmax = -0.3, 0.7
+    tmin, tmax = -0.3, 1
     evokeds_left = {}
     evokeds_right = {}
 
@@ -56,12 +56,12 @@ def erp_alltrials(mode= "Audio", rejection_th =7000000):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
 
-        axs[row_idx, col_idx].plot(evoked_left.times, evoked_left.data[ch_idx], color='black', linewidth=2, label='Mean')
+        axs[row_idx, col_idx].plot(evoked_left.times, evoked_left.data[ch_idx], color='green', linewidth=2, label='Mean')
         axs[row_idx, col_idx].set_title(ch_name)
-        axs[row_idx, col_idx].fill_between(evoked_left.times,
-                                        evoked_left.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        evoked_left.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
-                                        color='blue', alpha=0.3)
+        # axs[row_idx, col_idx].fill_between(evoked_left.times,
+        #                                 evoked_left.data[ch_idx] - np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
+        #                                 evoked_left.data[ch_idx] + np.std([evoked.data[ch_idx] for evoked in evokeds_left.values()], axis=0),
+        #                                 color='blue', alpha=0.3)
 
         for raw_file, evoked in evokeds_left.items():
             if raw_file == list(evokeds_left.keys())[0]:
@@ -137,7 +137,7 @@ def erp_alltrials(mode= "Audio", rejection_th =7000000):
 
 
 
-erp_alltrials(mode= "Audio", rejection_th =70)
-erp_alltrials(mode= "Vibro", rejection_th =70)
-erp_alltrials(mode= "Shape", rejection_th =70)
+erp_alltrials(mode= "Audio", rejection_th =70000)
+# erp_alltrials(mode= "Vibro", rejection_th =70)
+# erp_alltrials(mode= "Shape", rejection_th =70)
 
