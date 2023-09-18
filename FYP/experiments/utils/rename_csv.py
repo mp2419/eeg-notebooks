@@ -5,10 +5,10 @@ import shutil
 source_parent_folder = 'FYP\data'
 external_folder = 'FYP\data_ordered'
 
-for experiement_type in [ "ShapeVisual", "VibroVisual"]:
-    for sbj in range(9, 12):                  
+for experiement_type in [ "ShapeVisual"]:#, "VibroVisual","AudioVisual"]:
+    for sbj in [17]:                  
         # Iterate through the folder names from "01" to "13"
-        for session in range(2, 3):
+        for session in range(1, 2): #1,3 for both
             session = str(session)
             sbj = str(sbj).zfill(2)  # Pad with leading zeros if necessary
             

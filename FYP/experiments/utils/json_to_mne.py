@@ -62,7 +62,7 @@ def return_eventcount(raw_data):
 
 #-------------
 
-# json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_01_1.json')
+json_file_path = os.path.join(os.path.expanduser('~/'), 'Desktop', 'FYP', 'code_env', 'eeg-notebooks', 'FYP', 'data_ordered', 'data_json', 'AudioVisual_12_1.json')
 
-# raw_data = create_raw_object(json_file_path)
-# count = return_eventcount(raw_data)
+raw_data = create_raw_object(json_file_path)
+count = return_eventcount(raw_data)

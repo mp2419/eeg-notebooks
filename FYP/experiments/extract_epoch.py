@@ -91,8 +91,8 @@ import os
 import basic_analysis_lib
 import eeg_analysis_lib as analysis
 
-csv_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered')
-epochs_folder = os.path.join(csv_folder, "epochs")
+csv_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'data_ordered', 'data_csv')
+epochs_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', 'epochs')
 os.makedirs(epochs_folder, exist_ok=True)
 csv_files = [file for file in os.listdir(csv_folder) if file.endswith(".csv")]
 

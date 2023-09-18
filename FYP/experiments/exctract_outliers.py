@@ -3,7 +3,7 @@ import os
 import numpy as np
 from scipy.fft import fft, ifft
 from scipy.signal import butter, filtfilt
-import analysis_lib as analysis
+import eeg_analysis_lib as analysis
 import matplotlib.pyplot as plt
 
 # Load the epoch data from JSON file
@@ -29,10 +29,10 @@ def extract_outliers(json_file_path, threshold = 70, percentage = 30):
 
     # Calculate the percentage of epochs containing more than 30% outliers
     ch = ["TP9", "AF7", "AF8", "TP10"]
-    print("Percentage of epochs containing more than", percentage, "% outliers (above", threshold, "microV)")
-    for channel in range(0,4):
-        channel_outlier_percentage[channel] = (outlier_epochs[channel] / epoch_length) * 100
-        print(ch[channel], f": {channel_outlier_percentage[channel]:.2f}%")
+    # print("Percentage of epochs containing more than", percentage, "% outliers (above", threshold, "microV)")
+    # for channel in range(0,4):
+    #     channel_outlier_percentage[channel] = (outlier_epochs[channel] / epoch_length) * 100
+    #     print(ch[channel], f": {channel_outlier_percentage[channel]:.2f}%")
 
 
 # Auxiliary function to calculate the percentage of outliers in the filtered epoch data
@@ -61,11 +61,10 @@ json_folder = os.path.join(csv_folder, "epochs")
 json_files = [file for file in os.listdir(json_folder) if file.endswith(".json")]
 # json_files = [ os.path.join(json_folder,  'AudioVisual_01_1.json')]
 outliers_matrix = {}
-
 for file in json_files:
     json_file = os.path.join(json_folder, file)
     print("Computing outlier percentage for experiement: ", file)
-    percentages = analysis.extract_outliers(json_file, threshold = 70, percentage = 30)
+    percentages = extract_outliers(json_file, threshold = 70, percentage = 30)
     outliers_matrix[file] = percentages
 
 json_data = json.dumps(outliers_matrix, indent=4)
