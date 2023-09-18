@@ -29,11 +29,14 @@ def extract_outliers(json_file_path, threshold = 70, percentage = 30):
 
     # Calculate the percentage of epochs containing more than 30% outliers
     ch = ["TP9", "AF7", "AF8", "TP10"]
+    percentages = []
     # print("Percentage of epochs containing more than", percentage, "% outliers (above", threshold, "microV)")
-    # for channel in range(0,4):
-    #     channel_outlier_percentage[channel] = (outlier_epochs[channel] / epoch_length) * 100
-    #     print(ch[channel], f": {channel_outlier_percentage[channel]:.2f}%")
-
+    for channel in range(0,4):
+        channel_outlier_percentage[channel] = (outlier_epochs[channel] / epoch_length) * 100
+        # print(ch[channel], f": {channel_outlier_percentage[channel]:.2f}%")
+        percentages.append((outlier_epochs[channel] / epoch_length) * 100)
+        
+    return percentages
 
 # Auxiliary function to calculate the percentage of outliers in the filtered epoch data
 def calculate_outlier_percentage(epoch, threshold = 70):
@@ -67,9 +70,11 @@ for file in json_files:
     percentages = extract_outliers(json_file, threshold = 70, percentage = 30)
     outliers_matrix[file] = percentages
 
+#print(outliers_matrix)
+
 json_data = json.dumps(outliers_matrix, indent=4)
 
-results_folder = os.path.join(csv_folder, "results_data")
+results_folder = os.path.join(os.path.expanduser('~/'),'Desktop', 'FYP', 'code_env', 'eeg-notebooks','FYP', "results_data")
 os.makedirs(results_folder, exist_ok=True)
 
 json_file = os.path.join(results_folder, "Outliers_7030.json")
