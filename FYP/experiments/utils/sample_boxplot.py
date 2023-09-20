@@ -36,3 +36,55 @@ for ax in [ax1, ax2]:
     ax.set_ylabel('Observed values')
 
 plt.show()
+
+#----------------
+
+
+
+# Plotting the mean and standard deviation of each channel as a bar chart
+fig, axs = plt.subplots(4, 1, figsize=(5, 10), sharex=True)
+
+#freq_labels = list(bands.keys())
+freq_labels = [f'{key}\n({bands[key][0]}-{bands[key][1]}Hz)' for key in bands.keys()]
+
+x = np.arange(len(freq_labels))
+bar_width = 0.2
+opacity = 0.8
+opacity_std = 0.4
+colors = [ 'tab:red', 'tab:green', 'tab:blue']
+channel_names = ['TP9', 'AF7', 'AF8', 'TP10']
+
+for ch in range(len(psd_data['Audio'][0])):
+    for i, modality in enumerate(psd_data.keys()):
+        if absolute:
+            mean_power =(abs_power[modality][:, ch]) 
+            std_power = (abs_power_std[modality][:, ch]) 
+            axs[ch].set_ylim(-8,30)  
+        else:
+            mean_power =((rel_power[modality][:, ch])) 
+            std_power = ((rel_power_std[modality][:, ch])) 
+            #axs[ch].set_ylim(-3,12)
+            
+        axs[ch].bar(x + i * bar_width, mean_power, bar_width, alpha=opacity, color=colors[i],
+                    label=modality) #, yerr=std_power)
+        axs[ch].bar(x + i * bar_width, std_power, width=bar_width, align='center', bottom=mean_power,
+        alpha=opacity_std, color=colors[i])
+    axs[ch].legend()
+    #axs[ch].legend(loc='lower right')
+    axs[ch].set_ylabel('Power (dB)')
+    axs[ch].set_xticks(x + bar_width * (len(psd_data.keys()) - 1) / 2)
+    axs[ch].set_xticklabels(freq_labels)
+    axs[ch].set_title(f'{channel_names[ch]}')
+    axs[ch].axhline(y=0, color='black', linestyle='-', linewidth=0.5)
+    ax.grid(True)
+
+
+if absolute:
+    plt.suptitle("Mean Absolute Power for each Frequency Bands")
+else:
+    plt.suptitle("Mean Relative Power for each Frequency Bands")
+plt.xlabel('Frequency Bands')
+plt.tight_layout()
+plt.show()
+
+print("Percentage rel power distribution mean", rel_power)
