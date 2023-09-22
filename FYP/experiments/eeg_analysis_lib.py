@@ -529,13 +529,15 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
 
     
     # Plot the average evoked response, individual trials, and standard deviation for each channel for left events
-    fig, axs = plt.subplots(2, 2, figsize=(10, 6))
-    fig.suptitle(f'ERP for {mode} Modality - Left Event', fontsize=18)
+    fig, axs = plt.subplots(2,2, figsize=(6, 6))
+    fig.suptitle(f'ERP for {mode} Modality - Left Event', fontsize=20, fontweight='bold')
     plt.axhline(0, color='black', linewidth=0.5)
     plt.axvline(0, color='black',linestyle='--', linewidth=0.5)
     for ch_idx, ch_name in enumerate(evoked_left.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
+        # row_idx = 0
+        # col_idx = ch_idx
 
         if show_trials:
             for raw_file, evoked in evokeds_left.items():
@@ -552,9 +554,12 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
                                         color='orange', alpha=0.3, label='Std')
         axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
         axs[row_idx, col_idx].axhline(y=0, color='black')
-        axs[row_idx, col_idx].set_xlabel("Time from Event (s)",  fontsize=14)
-        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)",  fontsize=14)
-        axs[row_idx, col_idx].tick_params(axis='both', which='major', labelsize=12)
+        axs[1, 0].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[1, 1].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[0,0].set_ylabel("Amplitude (uV)",  fontsize=14)
+        axs[1,0].set_ylabel("Amplitude (uV)",  fontsize=14)
+
+        axs[row_idx, col_idx].tick_params(axis='both', which='major', labelsize=14)
     axs[row_idx, col_idx].legend(loc='lower right', fontsize=14)
     # fig.xlabel("Time from Event (s)",  fontsize=16)
     # fig.ylabel("Amplitude (uV)",  fontsize=14)
@@ -563,15 +568,17 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
     #plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
-
+    plt.savefig(f'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\results_data\\svg\\ERP_grandavg_left_{mode}.eps', format='eps')
     # Plot the average evoked response, individual trials, and standard deviation for each channel for right events
-    fig, axs = plt.subplots(2, 2, figsize=(10, 6))
-    fig.suptitle(f'ERP for {mode} Modality - Right Event',  fontsize=16)
+    fig, axs = plt.subplots(2,2, figsize=(12, 3))
+    fig.suptitle(f'ERP for {mode} Modality - Right Event',  fontsize=20, fontweight='bold')
 
 
     for ch_idx, ch_name in enumerate(evoked_right.ch_names):
         row_idx = ch_idx // 2
         col_idx = ch_idx % 2
+        # row_idx = 0
+        # col_idx = ch_idx
 
         if show_trials:
             for raw_file, evoked in evokeds_right.items():
@@ -588,12 +595,17 @@ def erp_alltrials(raw_files, mode= "Audio", rejection_th =7000000, show_trials=T
                                         color='green', alpha=0.3, label='Std')
         axs[row_idx, col_idx].axvline(x=0, color='black', linestyle='--')
         axs[row_idx, col_idx].axhline(y=0, color='black')
-        axs[row_idx, col_idx].set_xlabel("Time from Event (s)",  fontsize=14)
-        axs[row_idx, col_idx].set_ylabel("Amplitude (uV)",  fontsize=14)
+        axs[1, 0].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[1, 1].set_xlabel("Time from Event (s)",  fontsize=14)
+        axs[0,0].set_ylabel("Amplitude (uV)",  fontsize=14)
+        axs[1,0].set_ylabel("Amplitude (uV)",  fontsize=14)
+
     axs[row_idx, col_idx].legend(loc='lower right',  fontsize=14)
     #plt.axvline(x=0, color='black', linestyle='--')
     plt.tight_layout()
     plt.show()
+    plt.savefig(f'C:\\Users\\matil\\Desktop\\FYP\\code_env\\eeg-notebooks\\FYP\\results_data\\svg\\ERP_grandavg_right_{mode}.eps', format='eps')
+
 
 #---------------
 
